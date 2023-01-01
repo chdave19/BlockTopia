@@ -36,7 +36,7 @@ const SlideContainer = styled.main`
   align-items: center;
   height: 100vh;
   transition: 600ms;
-  transform: ${({$index})=>`translateX(${$index*-100}vw)`};
+  transform: ${({index})=>`translateX(${index*-100}vw)`};
   pointer-events: none;
   
 `;

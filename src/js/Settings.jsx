@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { RiCloseCircleFill } from "react-icons/ri";
 import PlayTutorial from './PlayTutorial';
 import SoundSettings from './SoundSettings';
+import ChangeTrack from './ChangeTrack';
 
 
 const MainContainer = styled.div`
@@ -40,6 +41,7 @@ const MainContainer = styled.div`
       color: inherit;
       font-size: inherit;
       font-family: inherit;
+      cursor: pointer;
     }
 `
 const CloseMenu = styled.button`
@@ -54,6 +56,7 @@ const CloseMenu = styled.button`
 function Settings({setMenu, resumeGame, FX_SOUND1, BgMusic, ScoreFx, LandingFx}) {
   const [openTutorial, setOpenTutorial] = useState(false);
   const [openSoundSettings, setOpenSoundSettings] = useState(false);
+  const [openChangeTrack, setOpenChangeTrack] = useState(false);
   const fxsound = FX_SOUND1.current;
   
   return (
@@ -64,16 +67,19 @@ function Settings({setMenu, resumeGame, FX_SOUND1, BgMusic, ScoreFx, LandingFx})
       {
         openSoundSettings && <SoundSettings BgMusic={BgMusic} setOpenSoundSettings={setOpenSoundSettings} FX_SOUND1={FX_SOUND1} ScoreFx={ScoreFx} LandingFx={LandingFx}/>
       }
+      {
+        openChangeTrack && <ChangeTrack setOpenChangeTrack={setOpenChangeTrack} FX_SOUND1={FX_SOUND1} BgMusic={BgMusic}/>
+      }
       <CloseMenu onClick={()=>{setMenu(false); resumeGame(); fxsound.play()}}>
       <RiCloseCircleFill />
       </CloseMenu>
       <ul>
         <li className='enter'><button onClick={()=>{resumeGame(); setMenu(false); fxsound.play()}}>Resume Game</button></li>
         <li className='enter'><button onClick={()=>{setOpenTutorial(true); fxsound.play()}}>How to Play</button></li>
-        <li className='enter'>Change Track</li>
+        <li className='enter'><button onClick={()=>{setOpenChangeTrack(true); fxsound.play()}}>Change Track</button></li>
         <li className='enter'><button onClick={()=>{setOpenSoundSettings(true); fxsound.play()}}>Sound</button></li>
         <li className='enter'>Controls</li>
-        <li className='enter'>Quit</li>
+        <li className='enter'><button onClick={()=>{ fxsound.play()}}>Quit</button></li>
       </ul>
     </MainContainer>
   )

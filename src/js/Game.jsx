@@ -243,9 +243,11 @@ function Game({FX_SOUND1, BgMusic}) {
     gameLoop = setInterval(() => {
       !pauseGameLoop.current && moveBlock();
     }, 1000);
+    console.clear()
   };
   // =======================================END-SECTION-{INIT}=====================================
   const drawBgGrids = ()=>{
+    console.clear();
     const { size, borderRadius, rectSize } = drawingMetrics;
     const gridBlocks = [];
     let tempGrid = [];

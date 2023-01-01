@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.5cb234e8.css",
-    "main.js": "/static/js/main.3fd0c7f5.js",
+    "main.js": "/static/js/main.7209450c.js",
     "static/js/372.f3ccc735.chunk.js": "/static/js/372.f3ccc735.chunk.js",
     "static/js/929.b3763d61.chunk.js": "/static/js/929.b3763d61.chunk.js",
     "static/js/258.527a9c6a.chunk.js": "/static/js/258.527a9c6a.chunk.js",
@@ -10,10 +10,12 @@
     "static/js/298.e661a2ed.chunk.js": "/static/js/298.e661a2ed.chunk.js",
     "static/js/90.4efceff3.chunk.js": "/static/js/90.4efceff3.chunk.js",
     "static/media/main-bg-1.jpg": "/static/media/main-bg-1.45018e8d4500ec2d3818.jpg",
-    "static/media/sound1.wav": "/static/media/sound1.1410a48041d5794e3435.wav",
-    "static/media/lionheart.mp3": "/static/media/lionheart.68080c0ac74668483df2.mp3",
+    "static/media/bg-music-5.mp3": "/static/media/bg-music-5.b620fd4a2765aea97fc7.mp3",
     "static/media/bg-music-1.mp3": "/static/media/bg-music-1.176e67015c21456a7391.mp3",
+    "static/media/bg-music-3.mp3": "/static/media/bg-music-3.ce420097325f365e5571.mp3",
+    "static/media/bg-music-4.mp3": "/static/media/bg-music-4.04a3250998ca4552ea9b.mp3",
     "static/media/fall-fx.wav": "/static/media/fall-fx.bac94d19ef44e393e6f7.wav",
+    "static/media/bg-music-2.mp3": "/static/media/bg-music-2.3d37d4ba9ef8762234fe.mp3",
     "static/media/end.png": "/static/media/end.3eee38a8aab8e63219c9.png",
     "static/media/how-to-play-intro.png": "/static/media/how-to-play-intro.1e69e8a17fb6d7420d8f.png",
     "static/media/score-fx.mp3": "/static/media/score-fx.9faf7bdc4128a2a6555e.mp3",
@@ -29,7 +31,7 @@
     "static/media/ui-click-1.mp3": "/static/media/ui-click-1.b37ae8b32c9f1adeb14a.mp3",
     "index.html": "/index.html",
     "main.5cb234e8.css.map": "/static/css/main.5cb234e8.css.map",
-    "main.3fd0c7f5.js.map": "/static/js/main.3fd0c7f5.js.map",
+    "main.7209450c.js.map": "/static/js/main.7209450c.js.map",
     "372.f3ccc735.chunk.js.map": "/static/js/372.f3ccc735.chunk.js.map",
     "258.527a9c6a.chunk.js.map": "/static/js/258.527a9c6a.chunk.js.map",
     "627.dba9be73.chunk.js.map": "/static/js/627.dba9be73.chunk.js.map",
@@ -39,6 +41,6 @@
   },
   "entrypoints": [
     "static/css/main.5cb234e8.css",
-    "static/js/main.3fd0c7f5.js"
+    "static/js/main.7209450c.js"
   ]
 }

@@ -86,6 +86,9 @@ function SoundSettings({
     mute: localStorage.getItem("soundSettingsData")
       ? JSON.parse(localStorage.getItem("soundSettingsData")).mute
       : false,
+    BgTrackName: localStorage.getItem("soundSettingsData")
+      ? JSON.parse(localStorage.getItem("soundSettingsData")).BgTrackName
+      : "Get Over Me",
   });
   const settingsDataRef = useRef(settingsData);
 
@@ -136,7 +139,8 @@ function SoundSettings({
               onClick={() => {
                 fxsound.play();
                 setSettingsData((prev) => ({ ...prev, music: true }));
-                !BgMusic.current.playing() && BgMusic.current.play("bgmusic");
+                !BgMusic.current.sound.playing() &&
+                  BgMusic.current.sound.play("bgmusic");
               }}
             >
               On
@@ -149,7 +153,7 @@ function SoundSettings({
               }}
               onClick={() => {
                 fxsound.play();
-                BgMusic.current.stop();
+                BgMusic.current.sound.stop();
                 setSettingsData((prev) => ({ ...prev, music: false }));
               }}
             >
