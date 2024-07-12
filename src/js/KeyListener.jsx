@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 function KeyListener({
     blockData,
     drawCurrentBlock,
@@ -6,6 +8,7 @@ function KeyListener({
     tetBlock,
     tetronimo
   }) {
+    const touchCord = useRef({touchStartX:0, touchStartY:0}).current;
     window.addEventListener("keydown", (e) => {
       // console.log(e.key);
       switch (e.key) {
@@ -89,6 +92,41 @@ function KeyListener({
       }
       drawCurrentBlock();
     };
+
+    // TOUCH EVENT LISTENERS
+   window.addEventListener('touchstart', function(e){
+    const touch = e.touches[0];
+    touchCord.touchStartX = touch.clientX;
+    touchCord.touchStartY = touch.clientY;
+   });
+   window.addEventListener('touchend', function(e){
+    const touch = e.changedTouches[0];
+    const touchEndX = touch.clientX;
+    const touchEndY = touch.clientY;
+
+    const deltaX = touchEndX - touchCord.touchStartX;
+    const deltaY = touchEndY - touchCord.touchStartY;
+
+    if(Math.abs(deltaX) > Math.abs(deltaY)){
+      // HORIZONTAL SWIPE
+      if(deltaX >0){
+        // RIGHT SWIPE
+        moveBlockRight();
+      }else if(deltaX<0) {
+        //LEFT SWIPE
+        moveBlockLeft();
+      }
+    }else if(Math.abs(deltaX) < Math.abs(deltaY)){
+      // VERTICAL SWIPE
+      if(deltaY>0){
+        // DOWN SWIPE
+        moveBlockDown();
+      }
+    }else if(Math.abs(deltaX) === Math.abs(deltaY)){
+      // TOUCH CLICK NO SWIPE
+      changeBlockShapeOrientation();
+    }
+   })
   }
   
   export default KeyListener;
