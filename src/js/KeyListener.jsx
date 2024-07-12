@@ -99,8 +99,8 @@ function KeyListener({
     touchCord.touchStartX = touch.clientX;
     touchCord.touchStartY = touch.clientY;
    });
-   window.addEventListener('touchend', function(e){
-    const touch = e.changedTouches[0];
+   window.addEventListener('touchmove', function(e){
+    const touch = e.touches[0];
     const touchEndX = touch.clientX;
     const touchEndY = touch.clientY;
 
