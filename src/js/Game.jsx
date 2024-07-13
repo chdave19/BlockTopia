@@ -10,8 +10,23 @@ const Background = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 `;
-const GameContainer = styled.div``;
+const GameContainer = styled.div`
+ border: 4px solid #59076d;
+ border-radius: 12px;
+`;
+
+const InputContainer = styled.div`
+  position: absolute;
+  bottom: 50px;
+  width: 200px;
+  background-color: red;
+  left: calc(50vw - 100px);
+  height: 50px;
+  display: grid;
+  place-content: center;
+`
 
 function Game() {
   // =================================START-SECTION-{VARIABLES}===========================================
@@ -89,6 +104,9 @@ function Game() {
   let noBlocks = useRef(130).current;
   let aspectRatio = useRef(noBlocks / 100).current;
   let drawingMetrics = useRef({}).current;
+  let pauseGameLoop = useRef(false).current;
+  let activateInput = useRef(true).current;
+  let PAUSE_TIME = useRef(2000).current;
 
   // =====================================END-SECTION-{VARIABLES}=======================================
 
@@ -118,6 +136,7 @@ function Game() {
     drawingMetrics.size = drawingMetrics.offsetWidth / 10;
     drawingMetrics.borderRadius = window.innerWidth < 450 ? 4 : 8;
 
+    drawBgGrids();
     drawGrids();
     window.addEventListener("resize", () => {
       Window.height = window.innerHeight;
@@ -127,15 +146,42 @@ function Game() {
         Window.width * gameScale * aspectRatio
       );
       destroyBgGrids();
+      drawBgGrids();
       drawGrids();
     });
 
     gameLoop = setInterval(() => {
-      moveBlock();
+      !pauseGameLoop && moveBlock();
     }, 1000);
   };
   // =======================================END-SECTION-{INIT}=====================================
-
+  const drawBgGrids = ()=>{
+    const { size, borderRadius, rectSize } = drawingMetrics;
+    const gridBlocks = [];
+    let tempGrid = [];
+    for (let i = 1; i <= noBlocks; i++) {
+      const graphics = new Graphics();
+      tempGrid.push(graphics);
+      if (i % 10 === 0) {
+        gridBlocks.push(tempGrid);
+        tempGrid = [];
+      }
+    }
+    gridBlocks.forEach((grid, y) => {
+      grid.forEach((block, x) => {
+        block.position.set(x * rectSize, y * rectSize);
+        const rectGradient = new FillGradient(0, 0, size / 2, size / 2);
+        ["#380f80", "#1b073f"].forEach((value, index) => {
+          rectGradient.addColorStop(index, value);
+        });
+        block.roundRect(0, 0, size, size, borderRadius).fill(rectGradient);
+        block
+          .roundRect(0, 0, size, size, borderRadius)
+          .stroke({ color: "#5f4689", width: 2 });
+        canvasRef.gridBg.addChild(block);
+      });
+    });
+  }
   // ========================================START-SECTION-{DRAW_GRIDS}====================================
   const drawGrids = () => {
     const { size, borderRadius, rectSize } = drawingMetrics;
@@ -153,7 +199,7 @@ function Game() {
         gridBlocks.push(tempGrid);
         tempGrid = [];
       }
-      
+
       // FOR BLOCK COLLISION DETECTION AT THE BASE
       // THIS WILL BE THE BASE OF THE COLLISION DETECTION
       if (i === noBlocks) {
@@ -165,18 +211,6 @@ function Game() {
     gridBlocks.forEach((grid, y) => {
       grid.forEach((block, x) => {
         block.position.set(x * rectSize, y * rectSize);
-        const rectGradient = new FillGradient(0, 0, size / 2, size / 2);
-        ["#380f80", "#1b073f"].forEach((value, index) => {
-          rectGradient.addColorStop(index, value);
-        });
-        //THIS SHADE DETAILS WILL ENABLE THE REMOVAL ALGORITHM TO SAVE THE SHADE STATE OF THE BLOCK
-        const shadeDetails = { shade: "empty", shadeGradient: rectGradient };
-        block.shadeType = shadeDetails;
-
-        block.roundRect(0, 0, size, size, borderRadius).fill(rectGradient);
-        block
-          .roundRect(0, 0, size, size, borderRadius)
-          .stroke({ color: "#5f4689", width: 2 });
         canvasRef.gridBg.addChild(block);
       });
     });
@@ -215,8 +249,6 @@ function Game() {
     });
 
     current.forEach((value) => {
-      const shadeDetails = { shade: "shaded", shadeGradient: rectGradient };
-      tetBlock[blockData.currentPosition + value].shadeType = shadeDetails;
       tetBlock[blockData.currentPosition + value]
         .roundRect(0, 0, size, size, borderRadius)
         .fill(rectGradient);
@@ -236,19 +268,8 @@ function Game() {
    */
   const undrawCurrentBlock = () => {
     current = tetronimo[prevBlockData.prevShape][prevBlockData.prevRotation];
-    const { size, borderRadius } = drawingMetrics;
-    const rectGradient = new FillGradient(0, 0, size / 2, size / 2);
-    ["#380f80", "#1b073f"].forEach((value, index) => {
-      rectGradient.addColorStop(index, value);
-    });
     current.forEach((value) => {
-      const shadeDetails = { shade: "empty", shadeGradient: rectGradient };
-      tetBlock[blockData.currentPosition + value].shadeType = shadeDetails;
       tetBlock[prevBlockData.prevPosition + value].clear();
-      tetBlock[prevBlockData.prevPosition + value]
-        .roundRect(0, 0, size, size, borderRadius)
-        .fill(rectGradient)
-        .stroke({ color: "#5f4689", width: 2 });
     });
   };
 
@@ -270,8 +291,9 @@ function Game() {
         tetBlock[blockData.currentPosition + index].collisionType = "taken";
       });
       checkForCompleteTakenRow();
-      blockData.currentPosition = Math.floor(Math.random() * 8);
+      blockData.currentPosition = 4;
       blockData.currentShape = Math.floor(Math.random()*5);
+      // blockData.currentShape = 4;
       blockData.currentRotation = 0;
       prevBlockData.prevPosition = blockData.currentPosition;
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
@@ -281,14 +303,9 @@ function Game() {
 
   // ================================START-SECTION-{CHECK_FOR_COMPLETE_TAKEN_ROW}============================================
   const checkForCompleteTakenRow = () => {
-    const { size, borderRadius } = drawingMetrics;
-    const rectGradient = new FillGradient(0, 0, size / 2, size / 2);
-    ["#380f80", "#1b073f"].forEach((value, index) => {
-      rectGradient.addColorStop(index, value);
-    });
     const clearIndex = [];
-    const checkForTaken = (index) => (tetBlock[index].collisionType === "taken")
-    for (let i = 0; i <= noBlocks-10; i += 10) {
+    const checkForTaken = (index) => tetBlock[index].collisionType === "taken";
+    for (let i = 0; i <= noBlocks - 10; i += 10) {
       const checkArr = [
         i,
         i + 1,
@@ -301,54 +318,63 @@ function Game() {
         i + 8,
         i + 9,
       ];
-      if (
-        checkArr.every(checkForTaken)
-      ) {
+      if (checkArr.every(checkForTaken)) {
         clearIndex.push(i);
       }
     }
     let clear = false;
+    const tempBlock = [];
     clearIndex.forEach((i) => {
       clear = true;
       const slicedBlocks = tetBlock.splice(i, 10);
-
+      tempBlock.push(...slicedBlocks);
+      tetBlock.unshift(...slicedBlocks);
+      pauseGameLoop = true;
+      activateInput = false;
+    });
+    if(clear){
+    animateBlock(tempBlock, PAUSE_TIME);
+    setTimeout(() => {
       //RESET THE CLEARED BLOCKS TO DEFAULT
-      slicedBlocks.forEach((grid) => {
+      tempBlock.forEach((grid) => {
         grid.clear();
         grid.collisionType = "";
-        grid
-          .roundRect(0, 0, size, size, borderRadius)
-          .fill(rectGradient)
-          .stroke({ color: "#5f4689", width: 2 });
       });
-      tetBlock.unshift(...slicedBlocks);
-      
-      // FOR BLOCK COLLISION DETECTION AT THE BASE
-      // THIS WILL BE THE BASE OF THE COLLISION DETECTION
-      
-    });
-    clear && drawBlockAfterClearance(tetBlock);
+      drawBlockAfterClearance(tetBlock);
+      // activateInput = true;
+    }, PAUSE_TIME+10);
+    }
   };
   // ================================END-SECTION-{CHECK_FOR_COMPLETE_TAKEN_ROW}============================================
 
-
   function drawBlockAfterClearance(tetBlock) {
-  console.log(tetBlock)  
-  const gridBlocks = [];
-  let tempGrid = [];
-  for (let i = 0; i < tetBlock.length; i++) {
-    tempGrid.push(tetBlock[i]);
-    if ((i + 1) % 10 === 0) {
-      gridBlocks.push(tempGrid);
-      tempGrid = [];
+    // console.log(tetBlock)
+    const gridBlocks = [];
+    let tempGrid = [];
+    for (let i = 0; i < tetBlock.length; i++) {
+      tempGrid.push(tetBlock[i]);
+      if ((i + 1) % 10 === 0) {
+        gridBlocks.push(tempGrid);
+        tempGrid = [];
+      }
     }
-  }
-  const { rectSize } = drawingMetrics;
-  gridBlocks.forEach((grid, y) => {
-    grid.forEach((block, x) => {
-      block.position.set(x * rectSize, y*rectSize);
+    const { rectSize } = drawingMetrics;
+    gridBlocks.forEach((grid, y) => {
+      grid.forEach((block, x) => {
+        block.position.set(x * rectSize, y * rectSize);
+      });
+      pauseGameLoop = false;
     });
-  });
+  }
+
+  const animateBlock =(block, time)=>{
+    const tempLoop = setInterval(()=>{
+      // WILL CAUSE CLEARED BLOCKS TO MOVE TILL THE LOOP IS DESTORYED
+     block.forEach(grid=>{
+      grid.x -= 40;
+     })
+    }, 60);
+    setTimeout(()=>{clearInterval(tempLoop)}, time);
   }
   // =================================START-SECTION-{USE_EFFECT}===========================================
   useEffect(() => {
@@ -364,15 +390,19 @@ function Game() {
   // ====================================START-SECTION-{GAME_COMPONENT_FUNCTION_RETURN_STATEMENT}========================================
   return (
     <Background>
-      <KeyListener
+      <GameContainer ref={backgroundRef}>
+        <InputContainer>
+        <KeyListener
         blockData={blockData}
         drawCurrentBlock={drawCurrentBlock}
         undrawCurrentBlock={undrawCurrentBlock}
         current={current}
         tetBlock={tetBlock}
         tetronimo={tetronimo}
+        activateInput={activateInput}
       />
-      <GameContainer ref={backgroundRef}></GameContainer>
+        </InputContainer>
+      </GameContainer>
     </Background>
   );
   // ====================================END-SECTION-{GAME_COMPONENT_FUNCTION_RETURN_STATEMENT}========================================
