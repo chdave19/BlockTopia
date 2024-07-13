@@ -12,7 +12,7 @@ function KeyListener({
   tetronimo,
   activateInput,
 }) {
-  const touchCord = useRef({ touchStartX: 0, touchStartY: 0 }).current;
+  const touchCord = useRef({ touchStartX: 0, touchStartY: 0, prevTouch: 0, LAG:100 }).current;
   window.addEventListener("keydown", (e) => {
     // console.log(e.key);
     switch (e.key) {
@@ -133,17 +133,20 @@ function KeyListener({
     const touch = e.touches[0];
     touchCord.touchStartX = touch.clientX;
     touchCord.touchStartY = touch.clientY;
+    touchCord.prevTouch = Date.now();
   });
   window.addEventListener("touchmove", function (e) {
     const touch = e.touches[0];
     const touchEndX = touch.clientX;
     const touchEndY = touch.clientY;
-    let lastTime = Date.now();
+    let {prevTouch, touchStartX, touchStartY, LAG} = touchCord;
 
-    if((Date.now()-lastTime) >= 100){
-      lastTime = Date.now();
-      const deltaX = touchEndX - touchCord.touchStartX;
-    const deltaY = touchEndY - touchCord.touchStartY;
+    if((Date.now()-prevTouch) <= LAG){
+      return;  
+    }
+    prevTouch = Date.now();
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
 
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
       // HORIZONTAL SWIPE
@@ -163,7 +166,6 @@ function KeyListener({
     } else if (Math.abs(deltaX) === Math.abs(deltaY)) {
       // TOUCH CLICK NO SWIPE
       activateInput && changeBlockShapeOrientation();
-    }
     }
   });
 
