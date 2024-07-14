@@ -12,7 +12,7 @@ function KeyListener({
   tetronimo,
   activateInput,
 }) {
-  const touchCord = useRef({ touchStartX: 0, touchStartY: 0, prevTouch: 0, LAG:100 }).current;
+  const touchCord = useRef({ touchStartX: 0, touchStartY: 0, prevTouch: 0, LAG:500 }).current;
   window.addEventListener("keydown", (e) => {
     // console.log(e.key);
     switch (e.key) {
