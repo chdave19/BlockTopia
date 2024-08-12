@@ -1,8 +1,46 @@
 import React from "react";
 import { useRef } from "react";
 // import { TiArrowSyncOutline } from "react-icons/ti";
+import { TbArrowBigLeftLinesFilled, TbArrowBigRightLinesFilled, TbArrowBigDownLinesFilled } from "react-icons/tb";
+import { LuRefreshCw } from "react-icons/lu";
+import styled from "styled-components";
 
 
+const IconWrapper = styled.div`
+  font-size: 4rem;
+  width: 60%;
+  height: 100%;
+  color: #160918;
+  button{
+    font-size: inherit;
+    color: #c20fe6;
+    outline: none;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+  }
+  button:is(:hover){
+    color: #ebdaed;
+  }
+  button:first-child{
+    top: -8px;
+  }
+  button:nth-child(2){
+    top: -8px;
+    left: 63%;
+  }
+  button:nth-child(3){
+    left: calc(50% - 2rem);
+    top: 120%;
+  }
+  button:nth-child(4){
+    left: calc(50% - 2rem);
+    top: -8px;
+  }
+`
 function KeyListener({
   blockData,
   drawCurrentBlock,
@@ -74,7 +112,6 @@ function KeyListener({
   };
 
   const moveBlockDown = () => {
-    console.log(activateInput);
     undrawCurrentBlock();
     // CANCEL OUT MOVEMENT CLOSE TO BASE OR ADJACENT BLOCK
     const shouldMoveDown = current.some((index) => {
@@ -169,7 +206,12 @@ function KeyListener({
     }
   });
 
-  return <button style={{background: 'black', color: "#fff", padding: '2rem'}} onClick={()=>changeBlockShapeOrientation()}>Switch</button>
+  return <IconWrapper>
+    <button onClick={()=>moveBlockLeft()}><TbArrowBigLeftLinesFilled/></button>
+    <button onClick={()=>moveBlockRight()}><TbArrowBigRightLinesFilled/></button>
+    <button onClick={()=>moveBlockDown()}><TbArrowBigDownLinesFilled/></button>
+    <button onClick={()=>changeBlockShapeOrientation()}><LuRefreshCw/></button>
+  </IconWrapper>
 }
 
  export default KeyListener;

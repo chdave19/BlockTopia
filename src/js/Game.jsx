@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Application, Graphics, Container, FillGradient } from "pixi.js";
 import KeyListener from "./KeyListener";
+import Monitor from "./Monitor";
 
 const Background = styled.div`
   background-color: var(--game-purple);
@@ -18,14 +19,16 @@ const GameContainer = styled.div`
 `;
 
 const InputContainer = styled.div`
-  position: absolute;
-  bottom: 50px;
-  width: 200px;
-  background-color: red;
-  left: calc(50vw - 100px);
+  position: fixed;
+  bottom: 8%;
+  width: 90vw;
+  background-color: #2c0e34;
+  left: 5vw;
   height: 50px;
-  display: grid;
-  place-content: center;
+  display: flex;
+  border: 4px solid #59076d;
+  border-radius: 12px;
+  justify-content: center;
 `
 
 function Game() {
@@ -107,11 +110,19 @@ function Game() {
   let pauseGameLoop = useRef(false).current;
   let activateInput = useRef(true).current;
   let PAUSE_TIME = useRef(2000).current;
+  const [controlBlocks, setControlBlocks] = useState(
+    [
+      Math.floor(Math.random()*5),
+      Math.floor(Math.random()*5),
+    ]
+  )
+  let run = useRef(true).current;
 
   // =====================================END-SECTION-{VARIABLES}=======================================
 
   // =====================================START-SECTION-{INIT}=======================================
   const init = async () => {
+    run = false;
     const app = new Application();
     await app.init({
       preserveDrawingBuffer: true,
@@ -135,7 +146,7 @@ function Game() {
         : drawingMetrics.width - 9 * 6 - 12;
     drawingMetrics.size = drawingMetrics.offsetWidth / 10;
     drawingMetrics.borderRadius = window.innerWidth < 450 ? 4 : 8;
-
+    
     drawBgGrids();
     drawGrids();
     window.addEventListener("resize", () => {
@@ -145,7 +156,7 @@ function Game() {
         Window.width * gameScale,
         Window.width * gameScale * aspectRatio
       );
-      destroyBgGrids();
+      // destroyBgGrids();
       drawBgGrids();
       drawGrids();
     });
@@ -184,7 +195,7 @@ function Game() {
   }
   // ========================================START-SECTION-{DRAW_GRIDS}====================================
   const drawGrids = () => {
-    const { size, borderRadius, rectSize } = drawingMetrics;
+    const { rectSize } = drawingMetrics;
     const gridBlocks = [];
     let tempGrid = [];
     const addGraphics = (graphics) => {
@@ -292,8 +303,11 @@ function Game() {
       });
       checkForCompleteTakenRow();
       blockData.currentPosition = 4;
-      blockData.currentShape = Math.floor(Math.random()*5);
-      // blockData.currentShape = 4;
+      let temp = controlBlocks;
+      blockData.currentShape = temp.pop();
+      temp.unshift(Math.floor(Math.random()*5));
+      setControlBlocks(temp);
+      setTimeout(()=>{console.log(controlBlocks)}, 600)
       blockData.currentRotation = 0;
       prevBlockData.prevPosition = blockData.currentPosition;
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
@@ -378,18 +392,19 @@ function Game() {
   }
   // =================================START-SECTION-{USE_EFFECT}===========================================
   useEffect(() => {
-    init();
-
+    run && init();
+    console.log(controlBlocks)
     return () => {
       clearInterval(gameLoop);
     };
-  }, []);
+  }, [controlBlocks]);
 
   // ====================================END-SECTION-{USE_EFFECT}========================================
 
   // ====================================START-SECTION-{GAME_COMPONENT_FUNCTION_RETURN_STATEMENT}========================================
   return (
     <Background>
+      <Monitor tetronimo={tetronimo} controlBlocks={controlBlocks} colorBg={colorBg}/>
       <GameContainer ref={backgroundRef}>
         <InputContainer>
         <KeyListener
