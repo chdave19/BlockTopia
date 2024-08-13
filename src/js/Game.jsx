@@ -22,7 +22,7 @@ const InputContainer = styled.div`
   position: fixed;
   bottom: 8%;
   width: 90vw;
-  background-color: #2c0e346b;
+  background-color: #2c0e348c;
   left: 5vw;
   height: 50px;
   display: flex;
@@ -149,17 +149,17 @@ function Game() {
     
     drawBgGrids();
     drawGrids();
-    window.addEventListener("resize", () => {
-      Window.height = window.innerHeight;
-      Window.width = window.innerWidth;
-      canvasRef.app.renderer.resize(
-        Window.width * gameScale,
-        Window.width * gameScale * aspectRatio
-      );
-      // destroyBgGrids();
-      drawBgGrids();
-      drawGrids();
-    });
+    // window.addEventListener("resize", () => {
+    //   Window.height = window.innerHeight;
+    //   Window.width = window.innerWidth;
+    //   canvasRef.app.renderer.resize(
+    //     Window.width * gameScale,
+    //     Window.width * gameScale * aspectRatio
+    //   );
+    //   // destroyBgGrids();
+    //   drawBgGrids();
+    //   drawGrids();
+    // });
 
     gameLoop = setInterval(() => {
       !pauseGameLoop && moveBlock();
