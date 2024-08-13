@@ -22,7 +22,7 @@ const InputContainer = styled.div`
   position: fixed;
   bottom: 8%;
   width: 90vw;
-  background-color: #2c0e34;
+  background-color: #2c0e346b;
   left: 5vw;
   height: 50px;
   display: flex;
