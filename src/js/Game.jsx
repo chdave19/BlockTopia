@@ -116,13 +116,13 @@ function Game() {
       Math.floor(Math.random()*5),
     ]
   )
-  let run = useRef(true).current;
-
+  const [run, setRun] = useState(true);
+  const controlBlockRef = useRef(controlBlocks);
   // =====================================END-SECTION-{VARIABLES}=======================================
 
   // =====================================START-SECTION-{INIT}=======================================
   const init = async () => {
-    run = false;
+    setRun(false);
     const app = new Application();
     await app.init({
       preserveDrawingBuffer: true,
@@ -149,17 +149,6 @@ function Game() {
     
     drawBgGrids();
     drawGrids();
-    // window.addEventListener("resize", () => {
-    //   Window.height = window.innerHeight;
-    //   Window.width = window.innerWidth;
-    //   canvasRef.app.renderer.resize(
-    //     Window.width * gameScale,
-    //     Window.width * gameScale * aspectRatio
-    //   );
-    //   // destroyBgGrids();
-    //   drawBgGrids();
-    //   drawGrids();
-    // });
 
     gameLoop = setInterval(() => {
       !pauseGameLoop && moveBlock();
@@ -303,11 +292,10 @@ function Game() {
       });
       checkForCompleteTakenRow();
       blockData.currentPosition = 4;
-      let temp = controlBlocks;
+      let temp = [...controlBlockRef.current];
       blockData.currentShape = temp.pop();
       temp.unshift(Math.floor(Math.random()*5));
       setControlBlocks(temp);
-      setTimeout(()=>{console.log(controlBlocks)}, 600)
       blockData.currentRotation = 0;
       prevBlockData.prevPosition = blockData.currentPosition;
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
@@ -383,7 +371,7 @@ function Game() {
 
   const animateBlock =(block, time)=>{
     const tempLoop = setInterval(()=>{
-      // WILL CAUSE CLEARED BLOCKS TO MOVE TILL THE LOOP IS DESTORYED
+      // WILL CAUSE CLEARED BLOCKS TO MOVE TILL THE LOOP IS DESTROYED
      block.forEach(grid=>{
       grid.x -= 40;
      })
@@ -392,12 +380,13 @@ function Game() {
   }
   // =================================START-SECTION-{USE_EFFECT}===========================================
   useEffect(() => {
+    controlBlockRef.current = controlBlocks;
     run && init();
-    console.log(controlBlocks)
+    
     return () => {
       clearInterval(gameLoop);
     };
-  }, [controlBlocks]);
+  }, [controlBlocks, run]);
 
   // ====================================END-SECTION-{USE_EFFECT}========================================
 

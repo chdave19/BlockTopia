@@ -1,21 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Application, Container, FillGradient, Graphics } from 'pixi.js';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 const MonitorContainer = styled.div`
-    margin-bottom: 1rem;
     border: 4px solid #680779;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    background-color: black;
 `
 function Monitor({tetronimo, controlBlocks, colorBg}) {
   let gameScale = useRef(window.innerWidth < 450 ? 0.9 : 0.8).current;
   let monitorRef = useRef();
   let blocksArr = useRef([]).current;
-  let start = useRef(true).current;
+  const [run, setRun] = useState(true);
+  let canvasRef = useRef(null).current;
+  const blockData = useRef({blockSize: null, xBlocks: null}).current;
+  let currentScale = useRef(1).current;
+  
 
 
   async function init(){
-   start = false;  
    const app = new Application();
    await app.init({
     preserveDrawingBuffer: true,
@@ -24,10 +32,12 @@ function Monitor({tetronimo, controlBlocks, colorBg}) {
     antialias: true,
    });
    monitorRef.current.appendChild(app.canvas);
-   
+   canvasRef = app;
 //    INITIALIZE THE BLOCKS
-   const blockSize = app.canvas.height/4;
-   const xBlocks = Math.floor(app.canvas.width/blockSize + 2);
+   blockData.blockSize = app.canvas.height/4;
+   blockData.xBlocks = Math.floor(app.canvas.width/blockData.blockSize + 2);
+   const blockSize = blockData.blockSize;
+   const xBlocks = blockData.xBlocks;
    let tempArr = [];
    const mainArr = [];
    for(let i=1; i<=(xBlocks*5); i++){
@@ -44,13 +54,26 @@ function Monitor({tetronimo, controlBlocks, colorBg}) {
         blockContainer.addChild(graphics);
         blocksArr.push(graphics);
         graphics.position.set(i*blockSize, j*blockSize);
-        // graphics.rect(0,0,blockSize,blockSize).fill(`rgb(${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)})`)
     })
-   })
+   });
+   drawTetro();
+    app.ticker.maxFPS = app.ticker.minFPS = 10;
+    app.ticker.add(delta=>{
+        blocksArr.forEach(graphics=>{
+            graphics.scale.set(currentScale);
+            if(currentScale>=1.3)currentScale=1;
+            currentScale += 0.01*delta.deltaTime;
+        })
+    })
+  }
+  
+  const drawTetro =()=>{
+   blocksArr.forEach(block=>block.clear());
    let offset = 1;
    blocksArr.forEach(block=>block.clear())
    controlBlocks.forEach(index=>{
     tetronimo[index][0].forEach(value=>{
+        const blockSize = blockData.blockSize;
         const rectGradient = new FillGradient(0,0,blockSize/2,blockSize/2);
         colorBg[index].forEach((value, index)=>{
             rectGradient.addColorStop(index, value);
@@ -58,13 +81,14 @@ function Monitor({tetronimo, controlBlocks, colorBg}) {
         blocksArr[value+offset].roundRect(0,0,blockSize,blockSize, 4).fill(rectGradient).stroke({length: 4, color: '#000'});
        });
        offset += 6;   
-   })
-  }  
+   });
+   setRun(false); 
+  }
 
   useEffect(()=>{
-   start && init();
-   console.log('changed')
-  }, [controlBlocks])  
+   run && init();
+   !run && drawTetro();
+  }, [controlBlocks, run])  
   return (
     <MonitorContainer ref={monitorRef}>
       

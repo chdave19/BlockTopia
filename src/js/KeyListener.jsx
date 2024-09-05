@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRef } from "react";
 // import { TiArrowSyncOutline } from "react-icons/ti";
 import { TbArrowBigLeftLinesFilled, TbArrowBigRightLinesFilled, TbArrowBigDownLinesFilled } from "react-icons/tb";
@@ -8,9 +8,10 @@ import styled from "styled-components";
 
 const IconWrapper = styled.div`
   font-size: 4rem;
-  width: 60%;
+  width: 100%;
   height: 100%;
   color: #160918;
+  position: relative;
   button{
     font-size: inherit;
     color: #c20fe6;
@@ -27,10 +28,11 @@ const IconWrapper = styled.div`
   }
   button:first-child{
     top: -8px;
+    left: 15%;
   }
   button:nth-child(2){
     top: -8px;
-    left: 63%;
+    left: calc(85% - 4rem);
   }
   button:nth-child(3){
     left: calc(50% - 2rem);
@@ -51,8 +53,8 @@ function KeyListener({
   activateInput,
 }) {
   const touchCord = useRef({ touchStartX: 0, touchStartY: 0, prevTouch: 0, LAG:500 }).current;
+  let allowControl = useRef({left: false, right: false, up: false, down: false}).current;
   window.addEventListener("keydown", (e) => {
-    // console.log(e.key);
     switch (e.key) {
       case "ArrowLeft":
         activateInput && moveBlockLeft();
@@ -70,9 +72,28 @@ function KeyListener({
     }
   });
 
+  window.addEventListener("keyup", (e) => {
+    switch (e.key) {
+      case "ArrowLeft":
+        allowControl.left = false;
+        break;
+      case "ArrowRight":
+        allowControl.right = false;
+        break;
+      case "ArrowDown":
+        allowControl.down = false;
+        break;
+      case "ArrowUp":
+        allowControl.up = false;
+        break;
+      default:
+    }
+  });
+
   //   MOVE THE BLOCKS TO THE LEFT
   const moveBlockLeft = () => {
-    undrawCurrentBlock();
+    if(!allowControl.left){
+      undrawCurrentBlock();
     let moveLeft = current.some(
       (index) => (index + blockData.currentPosition) % 10 === 0
     );
@@ -89,10 +110,13 @@ function KeyListener({
     }
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
     drawCurrentBlock();
+    // allowControl.left = true;
+    }
   };
 
   const moveBlockRight = () => {
-    undrawCurrentBlock();
+    if(!allowControl.right){
+      undrawCurrentBlock();
     let moveLeft = current.some(
       (index) => (index + blockData.currentPosition) % 10 === 9
     );
@@ -109,10 +133,13 @@ function KeyListener({
     }
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
     drawCurrentBlock();
+    // allowControl.right = true;
+    }
   };
 
   const moveBlockDown = () => {
-    undrawCurrentBlock();
+    if(!allowControl.down){
+      undrawCurrentBlock();
     // CANCEL OUT MOVEMENT CLOSE TO BASE OR ADJACENT BLOCK
     const shouldMoveDown = current.some((index) => {
       return (
@@ -127,11 +154,14 @@ function KeyListener({
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
     }
     drawCurrentBlock();
+    // allowControl.down = true;
+    }
   };
 
   //   WILL CHANGE THE BLOCK ORIENTATION OR SHAPE
   const changeBlockShapeOrientation = () => {
-    // CANCEL OUT ROTATION AT THE EDGES
+    if(!allowControl.up){
+      // CANCEL OUT ROTATION AT THE EDGES
     undrawCurrentBlock();
     let blockShouldRotate = !(
       current.some((index) => (blockData.currentPosition + index) % 10 === 9) ||
@@ -163,6 +193,8 @@ function KeyListener({
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
     }
     drawCurrentBlock();
+    // allowControl.up = true;
+    }
   };
 
   // TOUCH EVENT LISTENERS
@@ -205,6 +237,8 @@ function KeyListener({
       activateInput && changeBlockShapeOrientation();
     }
   });
+
+   useEffect(()=>{}, []);
 
   return <IconWrapper>
     <button onClick={()=>moveBlockLeft()}><TbArrowBigLeftLinesFilled/></button>
