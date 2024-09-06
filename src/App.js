@@ -25,13 +25,15 @@ function App() {
 
   function fullScreen(){
     const elem = document.documentElement;
-    if(elem.requestFullscreen){
-      elem.requestFullscreen();
-      setScreen(true);
-    }else if(elem.webkitOpenFullScreen){
-      elem.webkitOpenFullScreen();
-      setScreen(true);
-    }
+    elem.requestFullscreen();
+    setScreen(true);
+    // if(elem.requestFullscreen){
+    //   elem.requestFullscreen();
+    //   setScreen(true);
+    // }else if(elem.webkitOpenFullScreen){
+    //   elem.webkitOpenFullScreen();
+    //   setScreen(true);
+    // }
   }
   useEffect(()=>{
     
