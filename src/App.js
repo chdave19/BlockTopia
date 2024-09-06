@@ -14,14 +14,22 @@ const OpenScreen = styled.div`
  z-index: 9999;
  button{
   padding: 1rem;
+  color: #fff;
+  background-color: purple;
+  font-size: 2rem;
+  font-family: 'Gasalt-Black';
  }
 `
 function App() {
-  const [openFullScreen, setScreen] = useState(true);
+  const [openFullScreen, setScreen] = useState(false);
+
   function fullScreen(){
     const elem = document.documentElement;
-    if(elem){
+    if(elem.requestFullscreen){
       elem.requestFullscreen();
+      setScreen(true);
+    }else if(elem.webkitOpenFullScreen){
+      elem.webkitOpenFullScreen();
       setScreen(true);
     }
   }

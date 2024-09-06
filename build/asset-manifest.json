@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.cf3da03d.css",
-    "main.js": "/static/js/main.365f86c5.js",
+    "main.js": "/static/js/main.20abd7ab.js",
     "static/js/372.6f8b7bdb.chunk.js": "/static/js/372.6f8b7bdb.chunk.js",
     "static/js/929.89ad560a.chunk.js": "/static/js/929.89ad560a.chunk.js",
     "static/js/258.c6c520c2.chunk.js": "/static/js/258.c6c520c2.chunk.js",
@@ -14,7 +14,7 @@
     "static/media/Gasalt-Regular.otf": "/static/media/Gasalt-Regular.6b60002e61e2f12a60bd.otf",
     "index.html": "/index.html",
     "main.cf3da03d.css.map": "/static/css/main.cf3da03d.css.map",
-    "main.365f86c5.js.map": "/static/js/main.365f86c5.js.map",
+    "main.20abd7ab.js.map": "/static/js/main.20abd7ab.js.map",
     "372.6f8b7bdb.chunk.js.map": "/static/js/372.6f8b7bdb.chunk.js.map",
     "258.c6c520c2.chunk.js.map": "/static/js/258.c6c520c2.chunk.js.map",
     "627.dba9be73.chunk.js.map": "/static/js/627.dba9be73.chunk.js.map",
@@ -24,6 +24,6 @@
   },
   "entrypoints": [
     "static/css/main.cf3da03d.css",
-    "static/js/main.365f86c5.js"
+    "static/js/main.20abd7ab.js"
   ]
 }
