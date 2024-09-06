@@ -110,7 +110,7 @@ function KeyListener({
     }
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
     drawCurrentBlock();
-    allowControl.left = true;
+    // allowControl.left = false;
     }
   };
 
@@ -133,7 +133,7 @@ function KeyListener({
     }
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
     drawCurrentBlock();
-    allowControl.right = true;
+    // allowControl.right = true;
     }
   };
 
@@ -154,7 +154,7 @@ function KeyListener({
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
     }
     drawCurrentBlock();
-    allowControl.down = true;
+    // allowControl.down = true;
     }
   };
 
@@ -193,7 +193,7 @@ function KeyListener({
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
     }
     drawCurrentBlock();
-    allowControl.up = true;
+    // allowControl.up = true;
     }
   };
 

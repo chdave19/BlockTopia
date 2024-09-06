@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Application, Graphics, Container, FillGradient } from "pixi.js";
 import KeyListener from "./KeyListener";
 import Monitor from "./Monitor";
+import { IoSettingsSharp } from "react-icons/io5";
+import Settings from "./Settings";
 
 const Background = styled.div`
   background-color: var(--game-purple);
@@ -29,6 +31,34 @@ const InputContainer = styled.div`
   border: 4px solid #59076d;
   border-radius: 12px;
   justify-content: center;
+`
+const ScoreWrapper = styled.div`
+ border: 4px solid #59076d;
+ position: fixed;
+ left: 5vw;
+ top: 2vh;
+ background-color: #000;
+ color: #fff;
+ display: flex;
+ align-items: center;
+ padding: 0.8rem;
+ font-family: 'Gasalt-Black';
+ font-size: 1.2rem;
+ span{
+  font-size: 4rem;
+  font-weight: 600;
+  margin-left: 10px;
+ }
+`
+const MenuButton = styled.button`
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 3rem;
+  color: #be13e9;
+  position: fixed;
+  top: 2vh;
+  right: 5vw;
 `
 
 function Game() {
@@ -118,6 +148,8 @@ function Game() {
   )
   const [run, setRun] = useState(true);
   const controlBlockRef = useRef(controlBlocks);
+  const [playerScore, setPlayerScore] = useState(0);
+  const [openSettings, setMenu] = useState(false);
   // =====================================END-SECTION-{VARIABLES}=======================================
 
   // =====================================START-SECTION-{INIT}=======================================
@@ -322,6 +354,7 @@ function Game() {
       ];
       if (checkArr.every(checkForTaken)) {
         clearIndex.push(i);
+        setPlayerScore(prev=>prev+100);
       }
     }
     let clear = false;
@@ -350,7 +383,6 @@ function Game() {
   // ================================END-SECTION-{CHECK_FOR_COMPLETE_TAKEN_ROW}============================================
 
   function drawBlockAfterClearance(tetBlock) {
-    // console.log(tetBlock)
     const gridBlocks = [];
     let tempGrid = [];
     for (let i = 0; i < tetBlock.length; i++) {
@@ -378,6 +410,11 @@ function Game() {
     }, 60);
     setTimeout(()=>{clearInterval(tempLoop)}, time);
   }
+
+  // const setPlayerScore =()=>{
+
+  // }
+
   // =================================START-SECTION-{USE_EFFECT}===========================================
   useEffect(() => {
     controlBlockRef.current = controlBlocks;
@@ -393,6 +430,8 @@ function Game() {
   // ====================================START-SECTION-{GAME_COMPONENT_FUNCTION_RETURN_STATEMENT}========================================
   return (
     <Background>
+      <ScoreWrapper>Score: <span>{playerScore}</span></ScoreWrapper>
+      <MenuButton onClick={()=>setMenu(true)}><IoSettingsSharp/></MenuButton>
       <Monitor tetronimo={tetronimo} controlBlocks={controlBlocks} colorBg={colorBg}/>
       <GameContainer ref={backgroundRef}>
         <InputContainer>
@@ -407,6 +446,9 @@ function Game() {
       />
         </InputContainer>
       </GameContainer>
+      {
+        openSettings && <Settings setMenu={setMenu}/>
+      }
     </Background>
   );
   // ====================================END-SECTION-{GAME_COMPONENT_FUNCTION_RETURN_STATEMENT}========================================
