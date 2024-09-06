@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.cf3da03d.css",
-    "main.js": "/static/js/main.df86b6f4.js",
+    "main.js": "/static/js/main.d2f116a0.js",
     "static/js/372.6f8b7bdb.chunk.js": "/static/js/372.6f8b7bdb.chunk.js",
     "static/js/929.89ad560a.chunk.js": "/static/js/929.89ad560a.chunk.js",
     "static/js/258.c6c520c2.chunk.js": "/static/js/258.c6c520c2.chunk.js",
@@ -9,12 +9,13 @@
     "static/js/83.5358fb55.chunk.js": "/static/js/83.5358fb55.chunk.js",
     "static/js/257.eddbd885.chunk.js": "/static/js/257.eddbd885.chunk.js",
     "static/js/90.4efceff3.chunk.js": "/static/js/90.4efceff3.chunk.js",
+    "static/media/main-bg-1.jpg": "/static/media/main-bg-1.45018e8d4500ec2d3818.jpg",
     "static/media/Gasalt-Black.otf": "/static/media/Gasalt-Black.f29262a38f9b0554a49a.otf",
     "static/media/Gasalt-Thin.otf": "/static/media/Gasalt-Thin.5f01a1ea2ca8c47d8bde.otf",
     "static/media/Gasalt-Regular.otf": "/static/media/Gasalt-Regular.6b60002e61e2f12a60bd.otf",
     "index.html": "/index.html",
     "main.cf3da03d.css.map": "/static/css/main.cf3da03d.css.map",
-    "main.df86b6f4.js.map": "/static/js/main.df86b6f4.js.map",
+    "main.d2f116a0.js.map": "/static/js/main.d2f116a0.js.map",
     "372.6f8b7bdb.chunk.js.map": "/static/js/372.6f8b7bdb.chunk.js.map",
     "258.c6c520c2.chunk.js.map": "/static/js/258.c6c520c2.chunk.js.map",
     "627.dba9be73.chunk.js.map": "/static/js/627.dba9be73.chunk.js.map",
@@ -24,6 +25,6 @@
   },
   "entrypoints": [
     "static/css/main.cf3da03d.css",
-    "static/js/main.df86b6f4.js"
+    "static/js/main.d2f116a0.js"
   ]
 }

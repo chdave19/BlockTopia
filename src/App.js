@@ -21,19 +21,17 @@ const OpenScreen = styled.div`
  }
 `
 function App() {
-  const [openFullScreen, setScreen] = useState(false);
+  const [openFullScreen, setScreen] = useState(true);
 
   function fullScreen(){
     const elem = document.documentElement;
-    elem.requestFullscreen();
-    setScreen(true);
-    // if(elem.requestFullscreen){
-    //   elem.requestFullscreen();
-    //   setScreen(true);
-    // }else if(elem.webkitOpenFullScreen){
-    //   elem.webkitOpenFullScreen();
-    //   setScreen(true);
-    // }
+    if(elem.requestFullscreen){
+      elem.requestFullscreen();
+      setScreen(true);
+    }else if(elem.webkitOpenFullScreen){
+      elem.webkitOpenFullScreen();
+      setScreen(true);
+    }
   }
   useEffect(()=>{
     

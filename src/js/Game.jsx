@@ -5,20 +5,39 @@ import KeyListener from "./KeyListener";
 import Monitor from "./Monitor";
 import { IoSettingsSharp } from "react-icons/io5";
 import Settings from "./Settings";
+import MainBg1 from '../img/main-bg-1.jpg';
 
 const Background = styled.div`
-  background-color: var(--game-purple);
+  /* background-color: var(--game-purple); */
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
+  border: 6px solid #59076d;
+  border-radius: 12px;
+  background-image: url('../img/main-bg-1.jpg');
+  background-size: 100vw 100vh;
 `;
 const GameContainer = styled.div`
  border: 4px solid #59076d;
  border-radius: 12px;
 `;
+
+const BackgroundImage = styled.figure`
+  position: fixed;
+  z-index: -1;
+  height: 100vh;
+  width: 100vw;
+  inset: 0;
+
+  img{
+    height: 100%;
+    width: 100%;
+    display: block;
+  }
+`
 
 const InputContainer = styled.div`
   position: fixed;
@@ -36,16 +55,16 @@ const ScoreWrapper = styled.div`
  border: 4px solid #59076d;
  position: fixed;
  left: 5vw;
- top: 2vh;
+ top: 0.7vh;
  background-color: #000;
  color: #fff;
  display: flex;
  align-items: center;
- padding: 0.8rem;
+ padding: 0.5rem;
  font-family: 'Gasalt-Black';
  font-size: 1.2rem;
  span{
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 600;
   margin-left: 10px;
  }
@@ -110,14 +129,14 @@ function Game() {
   ]).current;
   let blockData = useRef({
     currentPosition: 4,
-    currentShape: 4,
+    currentShape: Math.floor(Math.random()*5),
     currentRotation: 0,
   }).current;
 
   let prevBlockData = useRef({
-    prevPosition: 4,
-    prevShape: 2,
-    prevRotation: 2,
+    prevPosition: 99,
+    prevShape: 4,
+    prevRotation: 0,
   }).current;
 
   const colorBg = [
@@ -161,7 +180,7 @@ function Game() {
       width: gameScale * Window.width,
       height: gameScale * Window.width * aspectRatio,
       antialias: true,
-      backgroundAlpha: 0,
+      backgroundAlpha: 1,
     });
 
     backgroundRef.current.appendChild(app.canvas);
@@ -258,7 +277,7 @@ function Game() {
 
   // ==================================START-SECTION-{MOVE_BLOCK}==========================================
   const moveBlock = () => {
-    gameStart && undrawCurrentBlock();
+    undrawCurrentBlock();
     drawCurrentBlock();
     freezeBlockVertically();
     blockData.currentPosition += 10;
@@ -430,6 +449,7 @@ function Game() {
   // ====================================START-SECTION-{GAME_COMPONENT_FUNCTION_RETURN_STATEMENT}========================================
   return (
     <Background>
+      <BackgroundImage><img src={MainBg1} alt="" /></BackgroundImage>
       <ScoreWrapper>Score: <span>{playerScore}</span></ScoreWrapper>
       <MenuButton onClick={()=>setMenu(true)}><IoSettingsSharp/></MenuButton>
       <Monitor tetronimo={tetronimo} controlBlocks={controlBlocks} colorBg={colorBg}/>

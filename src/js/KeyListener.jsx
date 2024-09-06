@@ -110,7 +110,7 @@ function KeyListener({
     }
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
     drawCurrentBlock();
-    // allowControl.left = false;
+    // allowControl.left = true;
     }
   };
 
