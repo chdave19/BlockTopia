@@ -107,9 +107,9 @@ const Button = styled.button`
     background-color: transparent;
  }
 `
-function PlayTutorial({ setOpenTutorial }) {
+function PlayTutorial({ setOpenTutorial, FX_SOUND1 }) {
  const [transformIndex, setTransformIndex] = useState(0);
-
+ const fxsound = FX_SOUND1.current;
 
 //  useEffect(()=>{
 //   console.log(transformIndex)  
@@ -117,7 +117,7 @@ function PlayTutorial({ setOpenTutorial }) {
 
   return (
     <MainContainer>
-      <BackButton title="go back" onClick={() => setOpenTutorial(false)}>
+      <BackButton title="go back" onClick={() => {setOpenTutorial(false); fxsound.play();}}>
         <RiArrowLeftCircleFill />
       </BackButton>
       <Main>
@@ -237,8 +237,8 @@ function PlayTutorial({ setOpenTutorial }) {
         </SlideContainer>
         <PageNo>{transformIndex+1}/8</PageNo>
         <SlideButton>
-         <Button onClick={()=>transformIndex<=0?setTransformIndex(7):setTransformIndex(prev=>prev-1)}><RiArrowLeftCircleFill /></Button>
-         <Button onClick={()=>transformIndex>=7?setTransformIndex(0):setTransformIndex(prev=>prev+1)}><RiArrowRightCircleFill /></Button>
+         <Button onClick={()=>{transformIndex<=0?setTransformIndex(7):setTransformIndex(prev=>prev-1);fxsound.play();}}><RiArrowLeftCircleFill /></Button>
+         <Button onClick={()=>{transformIndex>=7?setTransformIndex(0):setTransformIndex(prev=>prev+1);fxsound.play();}}><RiArrowRightCircleFill /></Button>
         </SlideButton>
       </Main>
     </MainContainer>

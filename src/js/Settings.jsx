@@ -50,21 +50,20 @@ const CloseMenu = styled.button`
 `
 
 
-function Settings({setMenu, pauseGameLoop}) {
+function Settings({setMenu, resumeGame, FX_SOUND1}) {
   const [openTutorial, setOpenTutorial] = useState(false);
-
-  useEffect(()=>{console.log(openTutorial)})
+  const fxsound = FX_SOUND1.current;
   return (
     <MainContainer>
       {
-        openTutorial && <PlayTutorial setOpenTutorial={setOpenTutorial}/>
+        openTutorial && <PlayTutorial setOpenTutorial={setOpenTutorial} FX_SOUND1={FX_SOUND1}/>
       }
-      <CloseMenu onClick={()=>{setMenu(false); pauseGameLoop()}}>
+      <CloseMenu onClick={()=>{setMenu(false); resumeGame(); fxsound.play()}}>
       <RiCloseCircleFill />
       </CloseMenu>
       <ul>
-        <li className='enter'><button onClick={()=>{pauseGameLoop(); setMenu(false)}}>Pause/Play</button></li>
-        <li className='enter'><button onClick={()=>{pauseGameLoop(); setOpenTutorial(true)}}>How to Play</button></li>
+        <li className='enter'><button onClick={()=>{resumeGame(); setMenu(false); fxsound.play()}}>Resume Game</button></li>
+        <li className='enter'><button onClick={()=>{setOpenTutorial(true); fxsound.play()}}>How to Play</button></li>
         <li>Change Track</li>
         <li>Sound</li>
         <li>Controls</li>

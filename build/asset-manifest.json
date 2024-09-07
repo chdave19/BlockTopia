@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.5cb234e8.css",
-    "main.js": "/static/js/main.fdbf833b.js",
+    "main.js": "/static/js/main.66a4126b.js",
     "static/js/372.6f8b7bdb.chunk.js": "/static/js/372.6f8b7bdb.chunk.js",
     "static/js/929.89ad560a.chunk.js": "/static/js/929.89ad560a.chunk.js",
     "static/js/258.c6c520c2.chunk.js": "/static/js/258.c6c520c2.chunk.js",
@@ -9,9 +9,14 @@
     "static/js/83.5358fb55.chunk.js": "/static/js/83.5358fb55.chunk.js",
     "static/js/257.eddbd885.chunk.js": "/static/js/257.eddbd885.chunk.js",
     "static/js/90.4efceff3.chunk.js": "/static/js/90.4efceff3.chunk.js",
-    "static/media/main-bg-6.jpg": "/static/media/main-bg-6.2e16d068e6ac198b8b08.jpg",
+    "static/media/sound1.wav": "/static/media/sound1.1410a48041d5794e3435.wav",
+    "static/media/main-bg-5.jpg": "/static/media/main-bg-5.150a8536868b2855f490.jpg",
+    "static/media/lionheart.mp3": "/static/media/lionheart.68080c0ac74668483df2.mp3",
+    "static/media/bg-music-1.mp3": "/static/media/bg-music-1.176e67015c21456a7391.mp3",
+    "static/media/fall-fx.wav": "/static/media/fall-fx.bac94d19ef44e393e6f7.wav",
     "static/media/end.png": "/static/media/end.3eee38a8aab8e63219c9.png",
     "static/media/how-to-play-intro.png": "/static/media/how-to-play-intro.1e69e8a17fb6d7420d8f.png",
+    "static/media/score-fx.mp3": "/static/media/score-fx.9faf7bdc4128a2a6555e.mp3",
     "static/media/right-control.png": "/static/media/right-control.7eb0ca739f1fca2766ac.png",
     "static/media/left-control.png": "/static/media/left-control.14fbc5917cadd19de57d.png",
     "static/media/change-shape-orientation.png": "/static/media/change-shape-orientation.e3d8d61ff433a7a6551d.png",
@@ -21,9 +26,10 @@
     "static/media/Gasalt-Regular.otf": "/static/media/Gasalt-Regular.6b60002e61e2f12a60bd.otf",
     "static/media/control-blocks.png": "/static/media/control-blocks.16d79d0cf5c84eb2d800.png",
     "static/media/score.png": "/static/media/score.ad6e826d5b28fede2564.png",
+    "static/media/ui-click-1.mp3": "/static/media/ui-click-1.b37ae8b32c9f1adeb14a.mp3",
     "index.html": "/index.html",
     "main.5cb234e8.css.map": "/static/css/main.5cb234e8.css.map",
-    "main.fdbf833b.js.map": "/static/js/main.fdbf833b.js.map",
+    "main.66a4126b.js.map": "/static/js/main.66a4126b.js.map",
     "372.6f8b7bdb.chunk.js.map": "/static/js/372.6f8b7bdb.chunk.js.map",
     "258.c6c520c2.chunk.js.map": "/static/js/258.c6c520c2.chunk.js.map",
     "627.dba9be73.chunk.js.map": "/static/js/627.dba9be73.chunk.js.map",
@@ -33,6 +39,6 @@
   },
   "entrypoints": [
     "static/css/main.5cb234e8.css",
-    "static/js/main.fdbf833b.js"
+    "static/js/main.66a4126b.js"
   ]
 }

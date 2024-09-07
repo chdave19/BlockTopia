@@ -5,7 +5,12 @@ import KeyListener from "./KeyListener";
 import Monitor from "./Monitor";
 import { IoSettingsSharp } from "react-icons/io5";
 import Settings from "./Settings";
-import MainBg2 from '../img/main-bg-6.jpg';
+import MainBg2 from '../img/main-bg-5.jpg';
+import ScoreMusic from '../sounds/score-fx.mp3';
+import {Howl, Howler} from 'howler';
+import LandMusic from '../sounds/fall-fx.wav';
+ 
+
 
 const Background = styled.div`
   /* background-color: var(--game-purple); */
@@ -41,7 +46,7 @@ const InputContainer = styled.div`
   position: fixed;
   bottom: 8%;
   width: 90vw;
-  background-color: #2c0e348c;
+  background-color: #2c0e34b9;
   left: 5vw;
   height: 50px;
   display: flex;
@@ -79,7 +84,7 @@ const MenuButton = styled.button`
   right: 5vw;
 `
 
-function Game() {
+function Game({FX_SOUND1, BgMusic}) {
   // =================================START-SECTION-{VARIABLES}===========================================
   const Window = useRef({
     width: window.innerWidth,
@@ -168,6 +173,14 @@ function Game() {
   const [playerScore, setPlayerScore] = useState(0);
   const [openSettings, setMenu] = useState(false);
   const shouldMoveBlock = useRef(true);
+  const ScoreFx = useRef(new Howl({
+    src: [ScoreMusic],
+    preload: true,
+  }));
+  const LandingFx = useRef(new Howl({
+    src: [LandMusic],
+    preload: true,
+  }));
   // =====================================END-SECTION-{VARIABLES}=======================================
 
   // =====================================START-SECTION-{INIT}=======================================
@@ -338,6 +351,7 @@ function Game() {
             "taken"
       )
     ) {
+      LandingFx.current.play();
       current.forEach((index) => {
         tetBlock[blockData.currentPosition + index].collisionType = "taken";
       });
@@ -422,18 +436,25 @@ function Game() {
   }
 
   const animateBlock =(block, time)=>{
+    ScoreFx.current.play();
+    BgMusic.current.volume(0.3);
     const tempLoop = setInterval(()=>{
       // WILL CAUSE CLEARED BLOCKS TO MOVE TILL THE LOOP IS DESTROYED
      block.forEach(grid=>{
       grid.x -= 40;
      })
     }, 60);
-    setTimeout(()=>{clearInterval(tempLoop)}, time);
+    setTimeout(()=>{clearInterval(tempLoop); BgMusic.current.volume(1);}, time);
   }
 
   const pauseGame =()=>{
-    pauseGameLoop.current = !pauseGameLoop.current;
-    activateInput.current = !activateInput.current;
+    pauseGameLoop.current = true;
+    activateInput.current = false;
+  }
+
+  const resumeGame =()=>{
+    pauseGameLoop.current = false;
+    activateInput.current = true;
   }
 
   const checkForGameOver =()=>{
@@ -466,7 +487,7 @@ function Game() {
     <Background>
       <BackgroundImage><img src={MainBg2} alt="" /></BackgroundImage>
       <ScoreWrapper>Score: <span>{playerScore}</span></ScoreWrapper>
-      <MenuButton onClick={()=>{setMenu(true); pauseGame();}}><IoSettingsSharp/></MenuButton>
+      <MenuButton onClick={()=>{setMenu(true); pauseGame(); FX_SOUND1.current.play()}}><IoSettingsSharp/></MenuButton>
       <Monitor tetronimo={tetronimo} controlBlocks={controlBlocks} colorBg={colorBg} pauseGameLoop={pauseGameLoop}/>
       <GameContainer ref={backgroundRef}>
         <InputContainer>
@@ -482,7 +503,7 @@ function Game() {
         </InputContainer>
       </GameContainer>
       {
-        openSettings && <Settings setMenu={setMenu} pauseGameLoop={pauseGame}/>
+        openSettings && <Settings setMenu={setMenu} resumeGame={resumeGame} FX_SOUND1={FX_SOUND1}/>
       }
     </Background>
   );
