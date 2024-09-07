@@ -22,7 +22,7 @@ const MainContainer = styled.div`
       list-style: none;
     }
 
-    li{
+    .enter{
       background-color: #000;
       border: 4px solid #59076d;
       border-radius: 12px;
@@ -69,10 +69,10 @@ function Settings({setMenu, resumeGame, FX_SOUND1, BgMusic}) {
       <ul>
         <li className='enter'><button onClick={()=>{resumeGame(); setMenu(false); fxsound.play()}}>Resume Game</button></li>
         <li className='enter'><button onClick={()=>{setOpenTutorial(true); fxsound.play()}}>How to Play</button></li>
-        <li>Change Track</li>
+        <li className='enter'>Change Track</li>
         <li className='enter'><button onClick={()=>{setOpenSoundSettings(true); fxsound.play()}}>Sound</button></li>
-        <li>Controls</li>
-        <li>Quit</li>
+        <li className='enter'>Controls</li>
+        <li className='enter'>Quit</li>
       </ul>
     </MainContainer>
   )
