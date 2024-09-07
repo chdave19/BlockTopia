@@ -21,7 +21,7 @@ const OpenScreen = styled.div`
  }
 `
 function App() {
-  const [openFullScreen, setScreen] = useState(true);
+  const [openFullScreen, setScreen] = useState(false);
 
   function fullScreen(){
     const elem = document.documentElement;

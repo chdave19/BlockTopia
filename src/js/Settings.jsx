@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RiCloseCircleFill } from "react-icons/ri";
 import PlayTutorial from './PlayTutorial';
@@ -31,6 +31,10 @@ const MainContainer = styled.div`
       padding: 10px;
     }
 
+    li:hover{
+      background-color: #464242;
+    }
+
     .enter button{
       color: inherit;
       font-size: inherit;
@@ -49,6 +53,7 @@ const CloseMenu = styled.button`
 function Settings({setMenu, pauseGameLoop}) {
   const [openTutorial, setOpenTutorial] = useState(false);
 
+  useEffect(()=>{console.log(openTutorial)})
   return (
     <MainContainer>
       {

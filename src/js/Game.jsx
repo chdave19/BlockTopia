@@ -50,10 +50,11 @@ const InputContainer = styled.div`
   justify-content: center;
 `
 const ScoreWrapper = styled.div`
- border: 4px solid #59076d;
+ border: 2px solid #59076d;
+ border-radius: 12px;
  position: fixed;
  left: 5vw;
- top: 0.7vh;
+ top: 1vh;
  background-color: #000;
  color: #fff;
  display: flex;
