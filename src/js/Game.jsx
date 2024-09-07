@@ -20,7 +20,7 @@ const Background = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  border: 6px solid #59076d;
+  border: 4px solid #59076d;
 `;
 const GameContainer = styled.div`
  border: 4px solid #59076d;
@@ -503,7 +503,7 @@ function Game({FX_SOUND1, BgMusic}) {
         </InputContainer>
       </GameContainer>
       {
-        openSettings && <Settings setMenu={setMenu} resumeGame={resumeGame} FX_SOUND1={FX_SOUND1}/>
+        openSettings && <Settings setMenu={setMenu} resumeGame={resumeGame} FX_SOUND1={FX_SOUND1} BgMusic={BgMusic}/>
       }
     </Background>
   );

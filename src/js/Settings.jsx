@@ -1,8 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RiCloseCircleFill } from "react-icons/ri";
 import PlayTutorial from './PlayTutorial';
+import SoundSettings from './SoundSettings';
+
 
 const MainContainer = styled.div`
     inset: 0;
@@ -50,13 +51,17 @@ const CloseMenu = styled.button`
 `
 
 
-function Settings({setMenu, resumeGame, FX_SOUND1}) {
+function Settings({setMenu, resumeGame, FX_SOUND1, BgMusic}) {
   const [openTutorial, setOpenTutorial] = useState(false);
+  const [openSoundSettings, setOpenSoundSettings] = useState(false);
   const fxsound = FX_SOUND1.current;
   return (
     <MainContainer>
       {
         openTutorial && <PlayTutorial setOpenTutorial={setOpenTutorial} FX_SOUND1={FX_SOUND1}/>
+      }
+      {
+        openSoundSettings && <SoundSettings BgMusic={BgMusic} setOpenSoundSettings={setOpenSoundSettings} FX_SOUND1={FX_SOUND1}/>
       }
       <CloseMenu onClick={()=>{setMenu(false); resumeGame(); fxsound.play()}}>
       <RiCloseCircleFill />
@@ -65,7 +70,7 @@ function Settings({setMenu, resumeGame, FX_SOUND1}) {
         <li className='enter'><button onClick={()=>{resumeGame(); setMenu(false); fxsound.play()}}>Resume Game</button></li>
         <li className='enter'><button onClick={()=>{setOpenTutorial(true); fxsound.play()}}>How to Play</button></li>
         <li>Change Track</li>
-        <li>Sound</li>
+        <li className='enter'><button onClick={()=>{setOpenSoundSettings(true); fxsound.play()}}>Sound</button></li>
         <li>Controls</li>
         <li>Quit</li>
       </ul>
