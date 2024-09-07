@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.cf3da03d.css",
-    "main.js": "/static/js/main.d2f116a0.js",
+    "main.css": "/static/css/main.5cb234e8.css",
+    "main.js": "/static/js/main.4f7f7d0c.js",
     "static/js/372.6f8b7bdb.chunk.js": "/static/js/372.6f8b7bdb.chunk.js",
     "static/js/929.89ad560a.chunk.js": "/static/js/929.89ad560a.chunk.js",
     "static/js/258.c6c520c2.chunk.js": "/static/js/258.c6c520c2.chunk.js",
@@ -9,13 +9,21 @@
     "static/js/83.5358fb55.chunk.js": "/static/js/83.5358fb55.chunk.js",
     "static/js/257.eddbd885.chunk.js": "/static/js/257.eddbd885.chunk.js",
     "static/js/90.4efceff3.chunk.js": "/static/js/90.4efceff3.chunk.js",
-    "static/media/main-bg-1.jpg": "/static/media/main-bg-1.45018e8d4500ec2d3818.jpg",
+    "static/media/main-bg-6.jpg": "/static/media/main-bg-6.2e16d068e6ac198b8b08.jpg",
+    "static/media/end.png": "/static/media/end.3eee38a8aab8e63219c9.png",
+    "static/media/how-to-play-intro.png": "/static/media/how-to-play-intro.1e69e8a17fb6d7420d8f.png",
+    "static/media/right-control.png": "/static/media/right-control.7eb0ca739f1fca2766ac.png",
+    "static/media/left-control.png": "/static/media/left-control.14fbc5917cadd19de57d.png",
+    "static/media/change-shape-orientation.png": "/static/media/change-shape-orientation.e3d8d61ff433a7a6551d.png",
+    "static/media/bottom-control.png": "/static/media/bottom-control.2414adb4518b5a6d2270.png",
     "static/media/Gasalt-Black.otf": "/static/media/Gasalt-Black.f29262a38f9b0554a49a.otf",
     "static/media/Gasalt-Thin.otf": "/static/media/Gasalt-Thin.5f01a1ea2ca8c47d8bde.otf",
     "static/media/Gasalt-Regular.otf": "/static/media/Gasalt-Regular.6b60002e61e2f12a60bd.otf",
+    "static/media/control-blocks.png": "/static/media/control-blocks.16d79d0cf5c84eb2d800.png",
+    "static/media/score.png": "/static/media/score.ad6e826d5b28fede2564.png",
     "index.html": "/index.html",
-    "main.cf3da03d.css.map": "/static/css/main.cf3da03d.css.map",
-    "main.d2f116a0.js.map": "/static/js/main.d2f116a0.js.map",
+    "main.5cb234e8.css.map": "/static/css/main.5cb234e8.css.map",
+    "main.4f7f7d0c.js.map": "/static/js/main.4f7f7d0c.js.map",
     "372.6f8b7bdb.chunk.js.map": "/static/js/372.6f8b7bdb.chunk.js.map",
     "258.c6c520c2.chunk.js.map": "/static/js/258.c6c520c2.chunk.js.map",
     "627.dba9be73.chunk.js.map": "/static/js/627.dba9be73.chunk.js.map",
@@ -24,7 +32,7 @@
     "90.4efceff3.chunk.js.map": "/static/js/90.4efceff3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.cf3da03d.css",
-    "static/js/main.d2f116a0.js"
+    "static/css/main.5cb234e8.css",
+    "static/js/main.4f7f7d0c.js"
   ]
 }

@@ -5,7 +5,7 @@ import KeyListener from "./KeyListener";
 import Monitor from "./Monitor";
 import { IoSettingsSharp } from "react-icons/io5";
 import Settings from "./Settings";
-import MainBg1 from '../img/main-bg-1.jpg';
+import MainBg2 from '../img/main-bg-6.jpg';
 
 const Background = styled.div`
   /* background-color: var(--game-purple); */
@@ -16,9 +16,6 @@ const Background = styled.div`
   justify-content: center;
   position: relative;
   border: 6px solid #59076d;
-  border-radius: 12px;
-  background-image: url('../img/main-bg-1.jpg');
-  background-size: 100vw 100vh;
 `;
 const GameContainer = styled.div`
  border: 4px solid #59076d;
@@ -36,6 +33,7 @@ const BackgroundImage = styled.figure`
     height: 100%;
     width: 100%;
     display: block;
+    object-fit: cover;
   }
 `
 
@@ -74,7 +72,7 @@ const MenuButton = styled.button`
   outline: none;
   border: none;
   font-size: 3rem;
-  color: #be13e9;
+  color: #8b0cab;
   position: fixed;
   top: 2vh;
   right: 5vw;
@@ -133,11 +131,11 @@ function Game() {
     currentRotation: 0,
   }).current;
 
-  let prevBlockData = useRef({
+  const prevBlockData = useRef({
     prevPosition: 99,
     prevShape: 4,
     prevRotation: 0,
-  }).current;
+  });
 
   const colorBg = [
     ["#6dfa51", "#0cab06"],
@@ -148,7 +146,6 @@ function Game() {
   ];
 
   let gameLoop = useRef().current;
-  let gameStart = useRef(false).current;
   let gameScale = useRef(window.innerWidth < 450 ? 0.9 : 0.8).current;
   let current = useRef(
     tetronimo[blockData.currentShape][blockData.currentRotation]
@@ -156,8 +153,8 @@ function Game() {
   let noBlocks = useRef(130).current;
   let aspectRatio = useRef(noBlocks / 100).current;
   let drawingMetrics = useRef({}).current;
-  let pauseGameLoop = useRef(false).current;
-  let activateInput = useRef(true).current;
+  const pauseGameLoop = useRef(false);
+  let activateInput = useRef(true);
   let PAUSE_TIME = useRef(2000).current;
   const [controlBlocks, setControlBlocks] = useState(
     [
@@ -169,6 +166,7 @@ function Game() {
   const controlBlockRef = useRef(controlBlocks);
   const [playerScore, setPlayerScore] = useState(0);
   const [openSettings, setMenu] = useState(false);
+  const shouldMoveBlock = useRef(true);
   // =====================================END-SECTION-{VARIABLES}=======================================
 
   // =====================================START-SECTION-{INIT}=======================================
@@ -202,7 +200,7 @@ function Game() {
     drawGrids();
 
     gameLoop = setInterval(() => {
-      !pauseGameLoop && moveBlock();
+      !pauseGameLoop.current && moveBlock();
     }, 1000);
   };
   // =======================================END-SECTION-{INIT}=====================================
@@ -279,8 +277,9 @@ function Game() {
   const moveBlock = () => {
     undrawCurrentBlock();
     drawCurrentBlock();
+    checkForGameOver();
     freezeBlockVertically();
-    blockData.currentPosition += 10;
+    if(shouldMoveBlock.current) blockData.currentPosition += 10;
   };
   // ==================================END-SECTION-{MOVE_BLOCK}==========================================
 
@@ -291,8 +290,8 @@ function Game() {
    * CAN CAUSE PERFOMANCE ISSUES IF NOT USED PROPERLY
    */
   const drawCurrentBlock = () => {
+    shouldMoveBlock.current = true;
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
-    gameStart = true;
     const { size, borderRadius } = drawingMetrics;
     const rectGradient = new FillGradient(0, 0, size / 2, size / 2);
     colorBg[blockData.currentShape].forEach((value, index) => {
@@ -304,9 +303,9 @@ function Game() {
         .roundRect(0, 0, size, size, borderRadius)
         .fill(rectGradient);
     });
-    prevBlockData.prevPosition = blockData.currentPosition;
-    prevBlockData.prevRotation = blockData.currentRotation;
-    prevBlockData.prevShape = blockData.currentShape;
+    prevBlockData.current.prevPosition = blockData.currentPosition;
+    prevBlockData.current.prevRotation = blockData.currentRotation;
+    prevBlockData.current.prevShape = blockData.currentShape;
   };
 
   // ================================END-SECTION-{DRAW_CURRENT_BLOCK}============================================
@@ -318,9 +317,9 @@ function Game() {
    * SHOULD BE USED ALONG WITH THE DRAW_CURRENT_BLOCK FUNCTION
    */
   const undrawCurrentBlock = () => {
-    current = tetronimo[prevBlockData.prevShape][prevBlockData.prevRotation];
-    current.forEach((value) => {
-      tetBlock[prevBlockData.prevPosition + value].clear();
+    const currentBlock = tetronimo[prevBlockData.current.prevShape][prevBlockData.current.prevRotation];
+    currentBlock.forEach((value) => {
+      tetBlock[prevBlockData.current.prevPosition + value].clear();
     });
   };
 
@@ -348,8 +347,9 @@ function Game() {
       temp.unshift(Math.floor(Math.random()*5));
       setControlBlocks(temp);
       blockData.currentRotation = 0;
-      prevBlockData.prevPosition = blockData.currentPosition;
+      prevBlockData.current.prevPosition = blockData.currentPosition;
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
+      shouldMoveBlock.current = false;
     }
   };
   // ================================END-SECTION-{FREEZE_BLOCK_VERTICALLY}============================================
@@ -383,8 +383,8 @@ function Game() {
       const slicedBlocks = tetBlock.splice(i, 10);
       tempBlock.push(...slicedBlocks);
       tetBlock.unshift(...slicedBlocks);
-      pauseGameLoop = true;
-      activateInput = false;
+      pauseGameLoop.current = true;
+      activateInput.current = false;
     });
     if(clear){
     animateBlock(tempBlock, PAUSE_TIME);
@@ -395,7 +395,7 @@ function Game() {
         grid.collisionType = "";
       });
       drawBlockAfterClearance(tetBlock);
-      // activateInput = true;
+      activateInput.current = true;
     }, PAUSE_TIME+10);
     }
   };
@@ -416,7 +416,7 @@ function Game() {
       grid.forEach((block, x) => {
         block.position.set(x * rectSize, y * rectSize);
       });
-      pauseGameLoop = false;
+      pauseGameLoop.current = false;
     });
   }
 
@@ -428,6 +428,20 @@ function Game() {
      })
     }, 60);
     setTimeout(()=>{clearInterval(tempLoop)}, time);
+  }
+
+  const pauseGame =()=>{
+    pauseGameLoop.current = !pauseGameLoop.current;
+    activateInput.current = !activateInput.current;
+  }
+
+  const checkForGameOver =()=>{
+    for(let i=0; i<current.length; i++){
+      if(tetBlock[blockData.currentPosition+current[i]+10].collisionType==='taken' && blockData.currentPosition===4){
+        pauseGame();
+        break;
+      }
+    }
   }
 
   // const setPlayerScore =()=>{
@@ -449,10 +463,10 @@ function Game() {
   // ====================================START-SECTION-{GAME_COMPONENT_FUNCTION_RETURN_STATEMENT}========================================
   return (
     <Background>
-      <BackgroundImage><img src={MainBg1} alt="" /></BackgroundImage>
+      <BackgroundImage><img src={MainBg2} alt="" /></BackgroundImage>
       <ScoreWrapper>Score: <span>{playerScore}</span></ScoreWrapper>
-      <MenuButton onClick={()=>setMenu(true)}><IoSettingsSharp/></MenuButton>
-      <Monitor tetronimo={tetronimo} controlBlocks={controlBlocks} colorBg={colorBg}/>
+      <MenuButton onClick={()=>{setMenu(true); pauseGame();}}><IoSettingsSharp/></MenuButton>
+      <Monitor tetronimo={tetronimo} controlBlocks={controlBlocks} colorBg={colorBg} pauseGameLoop={pauseGameLoop}/>
       <GameContainer ref={backgroundRef}>
         <InputContainer>
         <KeyListener
@@ -467,7 +481,7 @@ function Game() {
         </InputContainer>
       </GameContainer>
       {
-        openSettings && <Settings setMenu={setMenu}/>
+        openSettings && <Settings setMenu={setMenu} pauseGameLoop={pauseGame}/>
       }
     </Background>
   );

@@ -57,16 +57,16 @@ function KeyListener({
   window.addEventListener("keydown", (e) => {
     switch (e.key) {
       case "ArrowLeft":
-        activateInput && moveBlockLeft();
+        activateInput.current && moveBlockLeft();
         break;
       case "ArrowRight":
-        activateInput && moveBlockRight();
+        activateInput.current && moveBlockRight();
         break;
       case "ArrowDown":
-        activateInput && moveBlockDown();
+        activateInput.current && moveBlockDown();
         break;
       case "ArrowUp":
-        activateInput && changeBlockShapeOrientation();
+        activateInput.current && changeBlockShapeOrientation();
         break;
       default:
     }
@@ -110,7 +110,7 @@ function KeyListener({
     }
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
     drawCurrentBlock();
-    // allowControl.left = true;
+    allowControl.left = true;
     }
   };
 
@@ -133,7 +133,7 @@ function KeyListener({
     }
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
     drawCurrentBlock();
-    // allowControl.right = true;
+    allowControl.right = true;
     }
   };
 
@@ -154,7 +154,7 @@ function KeyListener({
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
     }
     drawCurrentBlock();
-    // allowControl.down = true;
+    allowControl.down = true;
     }
   };
 
@@ -193,7 +193,7 @@ function KeyListener({
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
     }
     drawCurrentBlock();
-    // allowControl.up = true;
+    allowControl.up = true;
     }
   };
 
@@ -241,10 +241,10 @@ function KeyListener({
    useEffect(()=>{}, []);
 
   return <IconWrapper>
-    <button onClick={()=>moveBlockLeft()}><TbArrowBigLeftLinesFilled/></button>
-    <button onClick={()=>moveBlockRight()}><TbArrowBigRightLinesFilled/></button>
-    <button onClick={()=>moveBlockDown()}><TbArrowBigDownLinesFilled/></button>
-    <button onClick={()=>changeBlockShapeOrientation()}><LuRefreshCw/></button>
+    <button onClick={()=>activateInput.current && moveBlockLeft()}><TbArrowBigLeftLinesFilled/></button>
+    <button onClick={()=>activateInput.current && moveBlockRight()}><TbArrowBigRightLinesFilled/></button>
+    <button onClick={()=>activateInput.current && moveBlockDown()}><TbArrowBigDownLinesFilled/></button>
+    <button onClick={()=>activateInput.current && changeBlockShapeOrientation()}><LuRefreshCw/></button>
   </IconWrapper>
 }
 

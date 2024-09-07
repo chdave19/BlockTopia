@@ -12,7 +12,7 @@ const MonitorContainer = styled.div`
     margin-bottom: 1rem;
     background-color: black;
 `
-function Monitor({tetronimo, controlBlocks, colorBg}) {
+function Monitor({tetronimo, controlBlocks, colorBg, pauseGameLoop}) {
   let gameScale = useRef(window.innerWidth < 450 ? 0.9 : 0.8).current;
   let monitorRef = useRef();
   let blocksArr = useRef([]).current;
@@ -59,11 +59,13 @@ function Monitor({tetronimo, controlBlocks, colorBg}) {
    drawTetro();
     app.ticker.maxFPS = app.ticker.minFPS = 10;
     app.ticker.add(delta=>{
+       if(!pauseGameLoop.current){
         blocksArr.forEach(graphics=>{
             graphics.scale.set(currentScale);
             if(currentScale>=1.3)currentScale=1;
             currentScale += 0.01*delta.deltaTime;
         })
+       }
     })
   }
   

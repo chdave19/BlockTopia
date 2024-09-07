@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RiCloseCircleFill } from "react-icons/ri";
+import PlayTutorial from './PlayTutorial';
 
 const MainContainer = styled.div`
     inset: 0;
     background-color: var(--game-purple);
     display: flex;
-    z-index: 9999;
+    z-index: 9;
     flex-direction: column;
     position: fixed;
     justify-content: center;
@@ -29,6 +30,12 @@ const MainContainer = styled.div`
       place-content: center;
       padding: 10px;
     }
+
+    .enter button{
+      color: inherit;
+      font-size: inherit;
+      font-family: inherit;
+    }
 `
 const CloseMenu = styled.button`
   position: absolute;
@@ -39,16 +46,20 @@ const CloseMenu = styled.button`
 `
 
 
-function Settings({setMenu}) {
+function Settings({setMenu, pauseGameLoop}) {
+  const [openTutorial, setOpenTutorial] = useState(false);
 
   return (
     <MainContainer>
-      <CloseMenu onClick={()=>setMenu(false)}>
+      {
+        openTutorial && <PlayTutorial setOpenTutorial={setOpenTutorial}/>
+      }
+      <CloseMenu onClick={()=>{setMenu(false); pauseGameLoop()}}>
       <RiCloseCircleFill />
       </CloseMenu>
       <ul>
-        <li>Pause/Play</li>
-        <li>How to Play</li>
+        <li className='enter'><button onClick={()=>{pauseGameLoop(); setMenu(false)}}>Pause/Play</button></li>
+        <li className='enter'><button onClick={()=>{pauseGameLoop(); setOpenTutorial(true)}}>How to Play</button></li>
         <li>Change Track</li>
         <li>Sound</li>
         <li>Controls</li>
