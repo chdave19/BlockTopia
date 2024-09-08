@@ -15,7 +15,7 @@ const MainContainer = styled.div`
     justify-content: center;
     align-items: center;
     font-family: 'Gasalt-Black';
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: #fff;
 
     ul{
@@ -32,7 +32,7 @@ const MainContainer = styled.div`
       padding: 10px;
     }
 
-    li:hover{
+    .enter:hover{
       background-color: #464242;
     }
 
@@ -51,17 +51,18 @@ const CloseMenu = styled.button`
 `
 
 
-function Settings({setMenu, resumeGame, FX_SOUND1, BgMusic}) {
+function Settings({setMenu, resumeGame, FX_SOUND1, BgMusic, ScoreFx, LandingFx}) {
   const [openTutorial, setOpenTutorial] = useState(false);
   const [openSoundSettings, setOpenSoundSettings] = useState(false);
   const fxsound = FX_SOUND1.current;
+  
   return (
     <MainContainer>
       {
         openTutorial && <PlayTutorial setOpenTutorial={setOpenTutorial} FX_SOUND1={FX_SOUND1}/>
       }
       {
-        openSoundSettings && <SoundSettings BgMusic={BgMusic} setOpenSoundSettings={setOpenSoundSettings} FX_SOUND1={FX_SOUND1}/>
+        openSoundSettings && <SoundSettings BgMusic={BgMusic} setOpenSoundSettings={setOpenSoundSettings} FX_SOUND1={FX_SOUND1} ScoreFx={ScoreFx} LandingFx={LandingFx}/>
       }
       <CloseMenu onClick={()=>{setMenu(false); resumeGame(); fxsound.play()}}>
       <RiCloseCircleFill />

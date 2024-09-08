@@ -53,47 +53,72 @@ function KeyListener({
   activateInput,
 }) {
   const touchCord = useRef({ touchStartX: 0, touchStartY: 0, prevTouch: 0, LAG:500 }).current;
-  let allowControl = useRef({left: false, right: false, up: false, down: false}).current;
-  window.addEventListener("keydown", (e) => {
-    switch (e.key) {
-      case "ArrowLeft":
-        activateInput.current && moveBlockLeft();
-        break;
-      case "ArrowRight":
-        activateInput.current && moveBlockRight();
-        break;
-      case "ArrowDown":
-        activateInput.current && moveBlockDown();
-        break;
-      case "ArrowUp":
-        activateInput.current && changeBlockShapeOrientation();
-        break;
-      default:
-    }
-  });
+  const initialize = useRef(true);
+  const init =()=>{
+    initialize.current = false;
+    window.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowLeft":
+          activateInput.current && moveBlockLeft();
+          break;
+        case "ArrowRight":
+          activateInput.current && moveBlockRight();
+          break;
+        case "ArrowDown":
+          activateInput.current && moveBlockDown();
+          break;
+        case "ArrowUp":
+          activateInput.current && changeBlockShapeOrientation();
+          break;
+        default:
+      }
+    });
 
-  window.addEventListener("keyup", (e) => {
-    switch (e.key) {
-      case "ArrowLeft":
-        allowControl.left = false;
-        break;
-      case "ArrowRight":
-        allowControl.right = false;
-        break;
-      case "ArrowDown":
-        allowControl.down = false;
-        break;
-      case "ArrowUp":
-        allowControl.up = false;
-        break;
-      default:
-    }
-  });
+    window.addEventListener("touchstart", function (e) {
+      const touch = e.touches[0];
+      touchCord.touchStartX = touch.clientX;
+      touchCord.touchStartY = touch.clientY;
+      touchCord.prevTouch = Date.now();
+    });
+    window.addEventListener("touchmove", function (e) {
+      const touch = e.touches[0];
+      const touchEndX = touch.clientX;
+      const touchEndY = touch.clientY;
+      let {prevTouch, touchStartX, touchStartY, LAG} = touchCord;
+  
+      if((Date.now()-prevTouch) <= LAG){
+        return;  
+      }
+      prevTouch = Date.now();
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+  
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // HORIZONTAL SWIPE
+        if (deltaX > 0) {
+          // RIGHT SWIPE
+          activateInput && moveBlockRight();
+        } else if (deltaX < 0) {
+          //LEFT SWIPE
+          activateInput && moveBlockLeft();
+        }
+      } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
+        // VERTICAL SWIPE
+        if (deltaY > 0) {
+          // DOWN SWIPE
+          activateInput && moveBlockDown();
+        }
+      } else if (Math.abs(deltaX) === Math.abs(deltaY)) {
+        // TOUCH CLICK NO SWIPE
+        activateInput && changeBlockShapeOrientation();
+      }
+    });
+  }
+  
 
   //   MOVE THE BLOCKS TO THE LEFT
   const moveBlockLeft = () => {
-    if(!allowControl.left){
-      undrawCurrentBlock();
+    undrawCurrentBlock();
     let moveLeft = current.some(
       (index) => (index + blockData.currentPosition) % 10 === 0
     );
@@ -110,13 +135,10 @@ function KeyListener({
     }
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
     drawCurrentBlock();
-    // allowControl.left = true;
-    }
   };
 
   const moveBlockRight = () => {
-    if(!allowControl.right){
-      undrawCurrentBlock();
+    undrawCurrentBlock();
     let moveLeft = current.some(
       (index) => (index + blockData.currentPosition) % 10 === 9
     );
@@ -133,13 +155,11 @@ function KeyListener({
     }
     current = tetronimo[blockData.currentShape][blockData.currentRotation];
     drawCurrentBlock();
-    // allowControl.right = true;
-    }
+    
   };
 
   const moveBlockDown = () => {
-    if(!allowControl.down){
-      undrawCurrentBlock();
+    undrawCurrentBlock();
     // CANCEL OUT MOVEMENT CLOSE TO BASE OR ADJACENT BLOCK
     const shouldMoveDown = current.some((index) => {
       return (
@@ -154,14 +174,12 @@ function KeyListener({
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
     }
     drawCurrentBlock();
-    // allowControl.down = true;
-    }
+    
   };
 
   //   WILL CHANGE THE BLOCK ORIENTATION OR SHAPE
   const changeBlockShapeOrientation = () => {
-    if(!allowControl.up){
-      // CANCEL OUT ROTATION AT THE EDGES
+    // CANCEL OUT ROTATION AT THE EDGES
     undrawCurrentBlock();
     let blockShouldRotate = !(
       current.some((index) => (blockData.currentPosition + index) % 10 === 9) ||
@@ -193,52 +211,14 @@ function KeyListener({
       current = tetronimo[blockData.currentShape][blockData.currentRotation];
     }
     drawCurrentBlock();
-    // allowControl.up = true;
-    }
   };
 
   // TOUCH EVENT LISTENERS
-  window.addEventListener("touchstart", function (e) {
-    const touch = e.touches[0];
-    touchCord.touchStartX = touch.clientX;
-    touchCord.touchStartY = touch.clientY;
-    touchCord.prevTouch = Date.now();
-  });
-  window.addEventListener("touchmove", function (e) {
-    const touch = e.touches[0];
-    const touchEndX = touch.clientX;
-    const touchEndY = touch.clientY;
-    let {prevTouch, touchStartX, touchStartY, LAG} = touchCord;
+ 
 
-    if((Date.now()-prevTouch) <= LAG){
-      return;  
-    }
-    prevTouch = Date.now();
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      // HORIZONTAL SWIPE
-      if (deltaX > 0) {
-        // RIGHT SWIPE
-        activateInput && moveBlockRight();
-      } else if (deltaX < 0) {
-        //LEFT SWIPE
-        activateInput && moveBlockLeft();
-      }
-    } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
-      // VERTICAL SWIPE
-      if (deltaY > 0) {
-        // DOWN SWIPE
-        activateInput && moveBlockDown();
-      }
-    } else if (Math.abs(deltaX) === Math.abs(deltaY)) {
-      // TOUCH CLICK NO SWIPE
-      activateInput && changeBlockShapeOrientation();
-    }
-  });
-
-   useEffect(()=>{}, []);
+   useEffect(()=>{
+    initialize.current && init();
+   }, []);
 
   return <IconWrapper>
     <button onClick={()=>activateInput.current && moveBlockLeft()}><TbArrowBigLeftLinesFilled/></button>

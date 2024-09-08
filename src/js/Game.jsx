@@ -73,6 +73,25 @@ const ScoreWrapper = styled.div`
   margin-left: 10px;
  }
 `
+const LevelWrapper = styled.div`
+ border: 2px solid #59076d;
+ border-radius: 12px;
+ position: fixed;
+ left: 47vw;
+ top: 1vh;
+ background-color: #000;
+ color: #fff;
+ display: flex;
+ align-items: center;
+ padding: 0.5rem;
+ font-family: 'Gasalt-Black';
+ font-size: 1.2rem;
+ span{
+  font-size: 3rem;
+  font-weight: 600;
+  margin-left: 10px;
+ }
+`
 const MenuButton = styled.button`
   background-color: transparent;
   outline: none;
@@ -144,11 +163,11 @@ function Game({FX_SOUND1, BgMusic}) {
   });
 
   const colorBg = [
-    ["#6dfa51", "#0cab06"],
-    ["#910ca9", "#e122fa"],
-    ["#fdfd55", "#c5d90e"],
-    ["#168cfa", "#30dde7"],
-    ["#f11010", "#e33f3f"],
+    ["#2e6923", "#40de3b"],
+    ["#620e71", "#dc33f3"],
+    ["#fcc80c", "#ecec14"],
+    ["#0b77dc", "#67f7ff"],
+    ["#dd0a31", "#e53333"],
   ];
 
   let gameLoop = useRef().current;
@@ -156,7 +175,7 @@ function Game({FX_SOUND1, BgMusic}) {
   let current = useRef(
     tetronimo[blockData.currentShape][blockData.currentRotation]
   ).current;
-  let noBlocks = useRef(130).current;
+  let noBlocks = useRef(140).current;
   let aspectRatio = useRef(noBlocks / 100).current;
   let drawingMetrics = useRef({}).current;
   const pauseGameLoop = useRef(false);
@@ -173,6 +192,8 @@ function Game({FX_SOUND1, BgMusic}) {
   const [playerScore, setPlayerScore] = useState(0);
   const [openSettings, setMenu] = useState(false);
   const shouldMoveBlock = useRef(true);
+  const [gameLevel, setGameLevel] = useState(1);
+  const playerScoreRef = useRef(playerScore);
   const ScoreFx = useRef(new Howl({
     src: [ScoreMusic],
     preload: true,
@@ -411,6 +432,7 @@ function Game({FX_SOUND1, BgMusic}) {
       });
       drawBlockAfterClearance(tetBlock);
       activateInput.current = true;
+      playerScoreRef.current%1000===0 && setGameLevel(prev=>prev+1);
     }, PAUSE_TIME+10);
     }
   };
@@ -473,12 +495,13 @@ function Game({FX_SOUND1, BgMusic}) {
   // =================================START-SECTION-{USE_EFFECT}===========================================
   useEffect(() => {
     controlBlockRef.current = controlBlocks;
+    playerScoreRef.current = playerScore;
     run && init();
     
     return () => {
       clearInterval(gameLoop);
     };
-  }, [controlBlocks, run]);
+  }, [controlBlocks, run, playerScore]);
 
   // ====================================END-SECTION-{USE_EFFECT}========================================
 
@@ -487,6 +510,7 @@ function Game({FX_SOUND1, BgMusic}) {
     <Background>
       <BackgroundImage><img src={MainBg2} alt="" /></BackgroundImage>
       <ScoreWrapper>Score: <span>{playerScore}</span></ScoreWrapper>
+      <LevelWrapper>Level: <span>{gameLevel}</span></LevelWrapper>
       <MenuButton onClick={()=>{setMenu(true); pauseGame(); FX_SOUND1.current.play()}}><IoSettingsSharp/></MenuButton>
       <Monitor tetronimo={tetronimo} controlBlocks={controlBlocks} colorBg={colorBg} pauseGameLoop={pauseGameLoop}/>
       <GameContainer ref={backgroundRef}>
@@ -503,7 +527,7 @@ function Game({FX_SOUND1, BgMusic}) {
         </InputContainer>
       </GameContainer>
       {
-        openSettings && <Settings setMenu={setMenu} resumeGame={resumeGame} FX_SOUND1={FX_SOUND1} BgMusic={BgMusic}/>
+        openSettings && <Settings setMenu={setMenu} resumeGame={resumeGame} FX_SOUND1={FX_SOUND1} BgMusic={BgMusic} ScoreFx={ScoreFx} LandingFx={LandingFx}/>
       }
     </Background>
   );
