@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunktetris_mobile=self.webpackChunktetris_mobile||[]).push([[929],{9929:(e,s,t)=>{t.r(s);t(1049),t(5341),t(3993),t(1878),t(4207),t(2394),t(1963),t(9737),t(464),t(4821),t(769)}}]);

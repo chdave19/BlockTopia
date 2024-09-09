@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { Application, Graphics, Container, FillGradient } from "pixi.js";
+import { Application, Graphics, Container, FillGradient, Assets, Texture, AnimatedSprite } from "pixi.js";
 import KeyListener from "./KeyListener";
 import Monitor from "./Monitor";
 import { IoSettingsSharp } from "react-icons/io5";
 import Settings from "./Settings";
-import MainBg2 from '../img/main-bg-5.jpg';
+import MainBg2 from '../img/main-bg-1.jpg';
 import ScoreMusic from '../sounds/score-fx.mp3';
 import {Howl, Howler} from 'howler';
 import LandMusic from '../sounds/fall-fx.wav';
@@ -112,6 +112,7 @@ function Game({FX_SOUND1, BgMusic}) {
   const backgroundRef = useRef();
   let canvasRef = useRef({}).current;
   let tetBlock = useRef([]).current;
+  const prevTetBlock = useRef([]);
   const width = 10;
   const lTetromino = [
     [1, width + 1, width * 2 + 1, 2],
@@ -194,6 +195,7 @@ function Game({FX_SOUND1, BgMusic}) {
   const shouldMoveBlock = useRef(true);
   const [gameLevel, setGameLevel] = useState(1);
   const playerScoreRef = useRef(playerScore);
+  const effectsArr = useRef([]);
   const ScoreFx = useRef(new Howl({
     src: [ScoreMusic],
     preload: true,
@@ -230,7 +232,11 @@ function Game({FX_SOUND1, BgMusic}) {
         : drawingMetrics.width - 9 * 6 - 12;
     drawingMetrics.size = drawingMetrics.offsetWidth / 10;
     drawingMetrics.borderRadius = window.innerWidth < 450 ? 4 : 8;
-    
+    await Assets.load('animatedsprites/blue.json');
+    await Assets.load('animatedsprites/green.json');
+    await Assets.load('animatedsprites/purple.json');
+    await Assets.load('animatedsprites/red.json');
+    await Assets.load('animatedsprites/yellow.json');
     drawBgGrids();
     drawGrids();
 
@@ -298,6 +304,7 @@ function Game({FX_SOUND1, BgMusic}) {
         canvasRef.gridBg.addChild(block);
       });
     });
+    drawAnimatedEffect();
   };
   // ====================================END-SECTION-{DRAW_GRIDS}========================================
 
@@ -414,6 +421,7 @@ function Game({FX_SOUND1, BgMusic}) {
     }
     let clear = false;
     const tempBlock = [];
+    prevTetBlock.current = [...tetBlock];
     clearIndex.forEach((i) => {
       clear = true;
       const slicedBlocks = tetBlock.splice(i, 10);
@@ -464,9 +472,10 @@ function Game({FX_SOUND1, BgMusic}) {
       // WILL CAUSE CLEARED BLOCKS TO MOVE TILL THE LOOP IS DESTROYED
      block.forEach(grid=>{
       grid.x -= 40;
+      effectsArr.current[prevTetBlock.current.indexOf(grid)].renderable = true;
      })
     }, 60);
-    setTimeout(()=>{clearInterval(tempLoop); BgMusic.current.volume(1);}, time);
+    setTimeout(()=>{clearInterval(tempLoop); BgMusic.current.volume(1); effectsArr.current.forEach(value=>{value.renderable=false})}, time);
   }
 
   const pauseGame =()=>{
@@ -486,6 +495,44 @@ function Game({FX_SOUND1, BgMusic}) {
         break;
       }
     }
+  }
+
+  const drawAnimatedEffect =()=>{
+    const blueTexture = [];
+    const greenTexture = [];
+    const purpleTexture = [];
+    const redTexture = [];
+    const yellowTexture = [];
+    const textures = [blueTexture, greenTexture, purpleTexture, redTexture, yellowTexture]
+    for(let i=1; i<=11; i++){
+      blueTexture.push(Texture.from(`blue${i}.png`));
+      greenTexture.push(Texture.from(`green${i}.png`));
+      purpleTexture.push(Texture.from(`purple${i}.png`));
+      redTexture.push(Texture.from(`red${i}.png`));
+      yellowTexture.push(Texture.from(`yellow${i}.png`));
+    }
+    const effects = [];
+    let tempEffects = [];
+    for (let i = 0; i < tetBlock.length; i++) {
+      const animatedSprite = new AnimatedSprite(textures[Math.floor(Math.random()*5)]);
+      canvasRef.app.stage.addChild(animatedSprite);
+      effectsArr.current.push(animatedSprite);
+      tempEffects.push(animatedSprite);
+      if ((i + 1) % 10 === 0) {
+        effects.push(tempEffects);
+        tempEffects = [];
+      }
+    }
+    const { rectSize } = drawingMetrics;
+    effects.forEach((grid, y) => {
+      grid.forEach((effect, x) => {
+        effect.position.set(x * rectSize, y * rectSize);
+        effect.animationSpeed = 0.2;
+        effect.renderable = false;
+        effect.scale.set(1.5)
+        effect.play();
+      });
+    });
   }
 
   // const setPlayerScore =()=>{
