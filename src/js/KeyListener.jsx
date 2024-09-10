@@ -86,10 +86,10 @@ function KeyListener({
       const touchEndY = touch.clientY;
       let {prevTouch, touchStartX, touchStartY, LAG} = touchCord;
   
-      if((Date.now()-prevTouch) <= LAG){
-        return;  
-      }
-      prevTouch = Date.now();
+      // if((Date.now()-prevTouch) <= LAG){
+      //   return;  
+      // }
+      // prevTouch = Date.now();
       const deltaX = touchEndX - touchStartX;
       const deltaY = touchEndY - touchStartY;
   
