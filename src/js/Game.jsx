@@ -469,7 +469,7 @@ function Game({FX_SOUND1, BgMusic}) {
 
   const animateBlock =(block, time)=>{
     ScoreFx.current.play();
-    BgMusic.current.volume(0.3);
+    BgMusic.current.sound.volume(0.3);
     const tempLoop = setInterval(()=>{
       // WILL CAUSE CLEARED BLOCKS TO MOVE TILL THE LOOP IS DESTROYED
      block.forEach(grid=>{
@@ -477,7 +477,7 @@ function Game({FX_SOUND1, BgMusic}) {
       effectsArr.current[prevTetBlock.current.indexOf(grid)].renderable = true;
      })
     }, 60);
-    setTimeout(()=>{clearInterval(tempLoop); BgMusic.current.volume(1); effectsArr.current.forEach(value=>{value.renderable=false})}, time);
+    setTimeout(()=>{clearInterval(tempLoop); BgMusic.current.sound.volume(1); effectsArr.current.forEach(value=>{value.renderable=false})}, time);
   }
 
   const pauseGame =()=>{
