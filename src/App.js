@@ -46,7 +46,7 @@ function App() {
       preload: true,
       loop: true,
       sprite: {
-        bgmusic: [0, 30000],
+        bgmusic: [0, 29800],
       },
     }),
   });
@@ -57,7 +57,7 @@ function App() {
       preload: true,
       loop: true,
       sprite: {
-        bgmusic: [0, 30000],
+        bgmusic: [0, 10570],
       },
     }),
   });
@@ -68,7 +68,7 @@ function App() {
       preload: true,
       loop: true,
       sprite: {
-        bgmusic: [0, 30000],
+        bgmusic: [0, 27500],
       },
     }),
   });
@@ -79,7 +79,7 @@ function App() {
       preload: true,
       loop: true,
       sprite: {
-        bgmusic: [0, 30000],
+        bgmusic: [0, 26900],
       },
     }),
   });
@@ -90,7 +90,7 @@ function App() {
       preload: true,
       loop: true,
       sprite: {
-        bgmusic: [0, 26000],
+        bgmusic: [0, 90000],
       },
     }),
   });
@@ -128,7 +128,7 @@ function App() {
     const sound = FX_SOUND1.current;
     sound.play();
     if (JSON.parse(localStorage.getItem("soundSettingsData")) === null){
-     setTrackName(track1);
+     setTrackName(tracks.current[Math.floor(Math.random()*5)]);
     }else if(JSON.parse(localStorage.getItem("soundSettingsData")).music){
      switch(JSON.parse(localStorage.getItem('soundSettingsData')).BgTrackName){
       case 'Get Over Me': setTrackName(track1);break;
@@ -147,7 +147,7 @@ function App() {
       elem.webkitOpenFullScreen();
       setScreen(true);
     }
-    console.clear()
+    // console.clear()
   }
   useEffect(() => {}, []);
   return (

@@ -7,7 +7,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import Settings from "./Settings";
 import MainBg2 from '../img/main-bg-1.jpg';
 import ScoreMusic from '../sounds/score-fx.mp3';
-import {Howl, Howler} from 'howler';
+import {Howl} from 'howler';
 import LandMusic from '../sounds/fall-fx.wav';
  
 
@@ -196,6 +196,7 @@ function Game({FX_SOUND1, BgMusic}) {
   const [gameLevel, setGameLevel] = useState(1);
   const playerScoreRef = useRef(playerScore);
   const effectsArr = useRef([]);
+  const levelUpdater = useRef(700);
   const ScoreFx = useRef(new Howl({
     src: [ScoreMusic],
     preload: true,
@@ -243,11 +244,11 @@ function Game({FX_SOUND1, BgMusic}) {
     gameLoop = setInterval(() => {
       !pauseGameLoop.current && moveBlock();
     }, 1000);
-    console.clear()
+    // console.clear()
   };
   // =======================================END-SECTION-{INIT}=====================================
   const drawBgGrids = ()=>{
-    console.clear();
+    // console.clear();
     const { size, borderRadius, rectSize } = drawingMetrics;
     const gridBlocks = [];
     let tempGrid = [];
@@ -442,7 +443,10 @@ function Game({FX_SOUND1, BgMusic}) {
       });
       drawBlockAfterClearance(tetBlock);
       activateInput.current = true;
-      playerScoreRef.current%1000===0 && setGameLevel(prev=>prev+1);
+      if(playerScoreRef.current>=levelUpdater.current){
+        levelUpdater.current += 700;
+        setGameLevel(prev=>prev+1);
+      };
     }, PAUSE_TIME+10);
     }
   };
@@ -531,7 +535,7 @@ function Game({FX_SOUND1, BgMusic}) {
         effect.position.set(x * rectSize, y * rectSize);
         effect.animationSpeed = 0.2;
         effect.renderable = false;
-        effect.scale.set(1.5)
+        effect.scale.set(2.4)
         effect.play();
       });
     });
