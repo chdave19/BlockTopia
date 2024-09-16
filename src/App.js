@@ -38,7 +38,6 @@ function App() {
       preload: true,
     })
   );
-  const BgMusic = useRef();
 
   const track1 = useRef({
     title: "Get Over Me",
@@ -95,6 +94,8 @@ function App() {
       },
     }),
   });
+
+  const BgMusic = useRef(track2.current);
 
   const tracks = useRef([track1, track2, track3, track4, track5])
   

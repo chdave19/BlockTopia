@@ -73,6 +73,7 @@ const List = styled.li`
 `;
 
 function ChangeTrack({ setOpenChangeTrack, FX_SOUND1, BgMusic }) {
+  
   const [track1_playing, setTrack1Playing] = useState(
     BgMusic.current.sound.playing() &&
       JSON.parse(localStorage.getItem("soundSettingsData")).BgTrackName ===
@@ -171,44 +172,69 @@ function ChangeTrack({ setOpenChangeTrack, FX_SOUND1, BgMusic }) {
   }
 
   function playTrack1() {
-    setTrack1Playing(true);
-    setTrack2Playing(false);
-    setTrack3Playing(false);
-    setTrack4Playing(false);
-    setTrack5Playing(false);
-    setTrackName(tracks[0]);
+    if (
+      JSON.parse(localStorage.getItem("soundSettingsData")).BgTrackName !==
+      "Get Over Me"
+    ) {
+      setTrack1Playing(true);
+      setTrack2Playing(false);
+      setTrack3Playing(false);
+      setTrack4Playing(false);
+      setTrack5Playing(false);
+      setTrackName(tracks[0]);
+    }
   }
   function playTrack2() {
-    setTrack1Playing(false);
-    setTrack2Playing(true);
-    setTrack3Playing(false);
-    setTrack4Playing(false);
-    setTrack5Playing(false);
-    setTrackName(tracks[1]);
+    if (
+      JSON.parse(localStorage.getItem("soundSettingsData")).BgTrackName !==
+      "Pacifier"
+    ) {
+      setTrack1Playing(false);
+      setTrack2Playing(true);
+      setTrack3Playing(false);
+      setTrack4Playing(false);
+      setTrack5Playing(false);
+      setTrackName(tracks[1]);
+    }
   }
   function playTrack3() {
-    setTrack1Playing(false);
-    setTrack2Playing(false);
-    setTrack3Playing(true);
-    setTrack4Playing(false);
-    setTrack5Playing(false);
-    setTrackName(tracks[2]);
+    if (
+      JSON.parse(localStorage.getItem("soundSettingsData")).BgTrackName !==
+      "Renegrade"
+    ) {
+      setTrack1Playing(false);
+      setTrack2Playing(false);
+      setTrack3Playing(true);
+      setTrack4Playing(false);
+      setTrack5Playing(false);
+      setTrackName(tracks[2]);
+    }
   }
   function playTrack4() {
-    setTrack1Playing(false);
-    setTrack2Playing(false);
-    setTrack3Playing(false);
-    setTrack4Playing(true);
-    setTrack5Playing(false);
-    setTrackName(tracks[3]);
+    if (
+      JSON.parse(localStorage.getItem("soundSettingsData")).BgTrackName !==
+      "The Scepter"
+    ) {
+      setTrack1Playing(false);
+      setTrack2Playing(false);
+      setTrack3Playing(false);
+      setTrack4Playing(true);
+      setTrack5Playing(false);
+      setTrackName(tracks[3]);
+    }
   }
   function playTrack5() {
-    setTrack1Playing(false);
-    setTrack2Playing(false);
-    setTrack3Playing(false);
-    setTrack4Playing(false);
-    setTrack5Playing(true);
-    setTrackName(tracks[4]);
+    if (
+      JSON.parse(localStorage.getItem("soundSettingsData")).BgTrackName !==
+      `Let's Roll`
+    ) {
+      setTrack1Playing(false);
+      setTrack2Playing(false);
+      setTrack3Playing(false);
+      setTrack4Playing(false);
+      setTrack5Playing(true);
+      setTrackName(tracks[4]);
+    }
   }
 
   useEffect(() => {
